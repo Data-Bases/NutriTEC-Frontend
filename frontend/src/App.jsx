@@ -43,6 +43,7 @@ function App() {
                     <Route path="/signup/nutricionista-2"> <SignUp pantalla="N2"/> </Route>
                     <Route path="/signup/cliente-1"> <SignUp pantalla="C1"/> </Route>
                     <Route path="/signup/cliente-2"> <SignUp pantalla="C2"/> </Route>
+                    <Route path="/:anything">404 Página no encontrada</Route>
                 </Switch>
             </div>
         </Router>

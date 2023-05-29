@@ -4,7 +4,7 @@ import { baseURL } from "./backendConection";
 import { Button } from "react-bootstrap";
 import { Link, useLocation } from "wouter";
 import "../styles/Custom.scss";
-import "../styles/SignUp.scss";
+import "../styles/Credentials.scss";
 import herbs from "../assets/herbs.jpg";
 
 const screens = {
@@ -84,10 +84,12 @@ function SignUp(props) {
             });
     };
     return (
-        <div className="signup p-5 d-flex">
-            <img src={herbs} className="signup-bg" />
-            <form onSubmit={createClient} className="d-flex signup-form">
+        <div className="credentials p-5 d-flex">
+            <img src={herbs} className="credentials-bg" />
+            <form onSubmit={createClient} className="d-flex credentials-form">
                 {screens[pantalla].map((item) => (
+                    <>
+                    <label htmlFor={item}> {item} </label>
                     <input
                         type={
                             item == "Nacimiento"
@@ -101,12 +103,15 @@ function SignUp(props) {
                         placeholder={item}
                         key={item}
                         id={item}
-                        className="signup-input"
+                        className="credentials-input"
                     />
+                    </>
                 ))}
-                <Button type="submit" variant="outline-secondary">Registrarse</Button>
+                <Button type="submit" variant="outline-secondary" className="btn-general">{
+                    pantalla.includes("1") ? "Siguiente" : "Registrarse"
+                }</Button>
                 <Link href="/">
-                    <Button variant="outline-secondary">Regresar</Button>
+                    <Button variant="outline-secondary" className="btn-general">Regresar</Button>
                 </Link>
             </form>
         </div>
