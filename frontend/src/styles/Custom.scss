@@ -30,6 +30,7 @@ input {
     box-shadow: 7px 7px 15px #1E1E1E;
     border-radius: 10px;
     color: $dark-text;
+    width: 100%;
     font-family: 'Laila';
     font-style: normal;
     font-weight: 400;
@@ -49,9 +50,11 @@ button, input[type="submit"], .btn-general {
     background-color: transparent;
     font-family: 'Laila';
     font-style: normal;
+    padding: 0 50px;
     font-weight: 400;
-    font-size: 2rem;
+    font-size: 1.5rem;
     line-height: 54px;
+    align-self: flex-end;
     
     color: $secondary;
 }
@@ -63,7 +66,8 @@ button, input[type="submit"], .btn-general {
     font-family: 'Laila';
     font-style: normal;
     font-weight: 400;
-    font-size: 2rem;
+    padding: 0 50px;
+    font-size: 1.5rem;
     line-height: 54px;
 
     color: white;

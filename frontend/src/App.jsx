@@ -5,6 +5,7 @@ import "./styles/App.scss";
 import Login from "./components/LogIn";
 import SignUp from "./components/SingUp";
 import Welcome from "./components/welcome";
+import SignUpChoose from "./components/SingUpChoose";
 
 import { pathToRegexp } from "path-to-regexp";
 import { Router, Switch, Route, Link, useRoute } from "wouter";
@@ -38,11 +39,12 @@ function App() {
             <div>
                 <Switch>
                     <Route path="/" component={Welcome} />
-                    <Route path="/login"> <Login/></Route>
-                    <Route path="/signup/nutricionista-1"> <SignUp pantalla="N1"/> </Route>
-                    <Route path="/signup/nutricionista-2"> <SignUp pantalla="N2"/> </Route>
-                    <Route path="/signup/cliente-1"> <SignUp pantalla="C1"/> </Route>
-                    <Route path="/signup/cliente-2"> <SignUp pantalla="C2"/> </Route>
+                    <Route path="/login"><Login/></Route>
+                    <Route path="/signup"><SignUpChoose/></Route>
+                    <Route path="/signup/nutricionista-1"><SignUp pantalla="N1"/></Route>
+                    <Route path="/signup/nutricionista-2"><SignUp pantalla="N2"/></Route>
+                    <Route path="/signup/cliente-1"><SignUp pantalla="C1"/></Route>
+                    <Route path="/signup/cliente-2"><SignUp pantalla="C2"/></Route>
                     <Route path="/:anything">404 Página no encontrada</Route>
                 </Switch>
             </div>

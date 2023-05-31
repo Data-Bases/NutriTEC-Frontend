@@ -88,30 +88,61 @@ function SignUp(props) {
             <img src={herbs} className="credentials-bg" />
             <form onSubmit={createClient} className="d-flex credentials-form">
                 {screens[pantalla].map((item) => (
-                    <>
-                    <label htmlFor={item}> {item} </label>
-                    <input
-                        type={
-                            item == "Nacimiento"
-                                ? "date"
-                                : item == "Foto"
-                                ? "file"
-                                : item == "Contraseña"
-                                ? "password"
-                                : "text"
-                        }
-                        placeholder={item}
-                        key={item}
-                        id={item}
-                        className="credentials-input"
-                    />
-                    </>
+                    <div className="credentials-input">
+                        <label htmlFor={item}> {item} </label>
+                        <input
+                            type={
+                                item == "Nacimiento"
+                                    ? "date"
+                                    : item == "Foto"
+                                    ? "file"
+                                    : item == "Contraseña"
+                                    ? "password"
+                                    : "text"
+                            }
+                            placeholder={item}
+                            key={item}
+                            id={item}
+                            className=""
+                        />
+                    </div>
                 ))}
-                <Button type="submit" variant="outline-secondary" className="btn-general">{
-                    pantalla.includes("1") ? "Siguiente" : "Registrarse"
-                }</Button>
-                <Link href="/">
-                    <Button variant="outline-secondary" className="btn-general">Regresar</Button>
+                {pantalla.includes("1") ? (
+                    <Link
+                        href={
+                            pantalla == "C1"
+                                ? "/signup/cliente-2"
+                                : "/signup/nutricionista-2"
+                        }
+                    >
+                        <Button
+                            variant="outline-secondary"
+                            className="btn-general"
+                        >
+                            Siguiente
+                        </Button>
+                    </Link>
+                ) : (
+                    <Button
+                        type="submit"
+                        variant="outline-secondary"
+                        className="btn-general"
+                    >
+                        Registrarse
+                    </Button>
+                )}
+                <Link
+                    href={
+                        pantalla.includes("1")
+                            ? "/signup/"
+                            : pantalla == "C2"
+                            ? "/signup/cliente-1"
+                            : "/signup/nutricionista-1"
+                    }
+                >
+                    <Button variant="outline-secondary" className="btn-general">
+                        Regresar
+                    </Button>
                 </Link>
             </form>
         </div>
