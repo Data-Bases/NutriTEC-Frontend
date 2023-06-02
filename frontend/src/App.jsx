@@ -4,7 +4,7 @@ import viteLogo from "/vite.svg";
 import "./styles/App.scss";
 import Login from "./components/LogIn";
 import SignUp from "./components/SingUp";
-import Welcome from "./components/welcome";
+import Welcome from "./components/Welcome";
 import SignUpChoose from "./components/SingUpChoose";
 
 import { pathToRegexp } from "path-to-regexp";
