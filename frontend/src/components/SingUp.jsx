@@ -10,7 +10,7 @@ import herbs from "../assets/herbs.jpg";
 const screens = {
     N1: [
         "Nombre",
-        "Apellido",
+        "Apellidos",
         "Cedula",
         "Foto",
         "Codigo Nutricionista",
@@ -24,7 +24,7 @@ const screens = {
     N2: ["Tarjeta", "Tipo de Cobro", "Direccion"],
     C1: [
         "Nombre",
-        "Apellido",
+        "Apellidos",
         "Cedula",
         "País",
         "Calorias Máximas",
