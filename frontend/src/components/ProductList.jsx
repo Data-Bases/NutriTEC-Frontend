@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ObjectList from './ObjectList';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ProductList({ productos, setProductFunction }) {
@@ -19,7 +19,10 @@ function ProductList({ productos, setProductFunction }) {
 
     const handleSelectedProduct = (producto) => {
         setSelectedProduct(producto)
-        setProductFunction(producto)
+
+        if (setProductFunction != null) {
+            setProductFunction(producto)
+        }
 
         setEditedID(producto.identificador)
         setEditedEnergia(producto.energia)
@@ -56,7 +59,6 @@ function ProductList({ productos, setProductFunction }) {
 
     return (
         <>
-            <hr />
             <Container
                 className="d-flex"
                 style={{

@@ -15,7 +15,11 @@ function ObjectList({ objetos, setObjectFunction }) {
     // Funciones
     const handleClick = (objeto) => { // Controlador al hacer click en un objeto de la lista
         setSelectedID(objeto.identificador);
-        setObjectFunction(objeto);
+
+        if (setObjectFunction != null) {
+            setObjectFunction(objeto);
+        }
+
     };
 
     const handleDoubleClick = (objeto) => { // Controlador al hacer doble click en un objeto de la lista
@@ -144,7 +148,7 @@ function ObjectList({ objetos, setObjectFunction }) {
                         placeholder="ID"
                         display='flex'
                     />
-                    <Button type="submit" className="ml-auto" disabled={isAddDisabled} style={{background: '#1382C9'}}> + </Button>
+                    <Button type="submit" className="ml-auto" disabled={isAddDisabled} style={{ background: '#1382C9' }}> + </Button>
                 </div>
             </form>
         </div>

@@ -10,7 +10,8 @@ import SignUpChoose from "./components/SingUpChoose";
 import ProductList from './components/ProductList';
 
 import ProductManagement from './components/ProductManagement';
-
+import InformationRecord from './components/InformationRecord';
+import NutricionalProducts from './components/NutricionalProducts';
 import TabBar from './components/NavigationBar';
 
 import { pathToRegexp } from "path-to-regexp";
@@ -190,23 +191,12 @@ function App() {
 
     return (
         <>
-            <ProductManagement objetosBD={productos}></ProductManagement>
+            {/* <ProductManagement productos={productos}></ProductManagement> */}
+            {/* <InformationRecord productos={productos}></InformationRecord> */}
+            <NutricionalProducts productos={productos}></NutricionalProducts>
+
             <TabBar></TabBar>
         </>
-        // <Router matcher={customMatcher}>
-        //     <div>
-        //         <Switch>
-        //             <Route path="/" component={Welcome} />
-        //             <Route path="/login"><Login/></Route>
-        //             <Route path="/signup"><SignUpChoose/></Route>
-        //             <Route path="/signup/nutricionista-1"><SignUp pantalla="N1"/></Route>
-        //             <Route path="/signup/nutricionista-2"><SignUp pantalla="N2"/></Route>
-        //             <Route path="/signup/cliente-1"><SignUp pantalla="C1"/></Route>
-        //             <Route path="/signup/cliente-2"><SignUp pantalla="C2"/></Route>
-        //             <Route path="/:anything">404 Página no encontrada</Route>
-        //         </Switch>
-        //     </div>
-        // </Router>
     );
 }
 
