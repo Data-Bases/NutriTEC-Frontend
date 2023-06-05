@@ -26,70 +26,116 @@ const screens = {
         "Nombre",
         "Apellidos",
         "Cedula",
-        "País",
+        "Pais",
         "Calorias Máximas",
         "Nacimiento",
         "Peso",
         "IMC",
         "Email",
-        "Password",
+        "Contraseña",
     ],
     C2: ["Cuello (mm)", "Cintura (mm)", "Cadera (mm)", "% Músculo", "% Grasa"],
+};
+
+const refs = {
+    Nombre: React.createRef(),
+    Apellidos: React.createRef(),
+    Cedula: React.createRef(),
+    Pais: React.createRef(),
+    Foto: React.createRef(),
+    "Calorias Máximas": React.createRef(),
+    "Codigo Nutricionista": React.createRef(),
+    Nacimiento: React.createRef(),
+    Peso: React.createRef(),
+    IMC: React.createRef(),
+    Email: React.createRef(),
+    Contraseña: React.createRef(),
+    Tarjeta: React.createRef(),
+    "Tipo de Cobro": React.createRef(),
+    Direccion: React.createRef(),
+    "Cuello (mm)": React.createRef(),
+    "Cintura (mm)": React.createRef(),
+    "Cadera (mm)": React.createRef(),
+    "% Músculo": React.createRef(),
+    "% Grasa": React.createRef()
+}
+
+const blobToBase64 = (blob) => {
+    return new Promise( (resolve, reject) =>{
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            console.log(reader.result.split(',')[1]);
+            resolve(reader.result.split(',')[1]);
+            // "data:image/jpg;base64,    =sdCXDSAsadsadsa"
+        };
+    });
 };
 
 function SignUp(props) {
     const pantalla = props.pantalla;
     const [location, navigate] = useLocation();
+    const [datos, setDatos] = useState();
+
+    console.log(refs["Foto"].current ? blobToBase64(refs["Foto"].current.files[0]) : "Null")
 
     const createClient = (event) => {
         event.preventDefault();
         const obj = event.target;
-        axios
-            .post(baseURL + `Client/CreateClient`, {
-                //Body
-                id: obj.cedula.value,
-                name: obj.nombre.value,
-                lastName1: obj.ape1.value,
-                lastName2: obj.ape2.value,
-                province: obj.provincia.value,
-                canton: obj.canton.value,
-                district: obj.distrito.value,
-                email: obj.email.value,
-                password: obj.password.value,
-                weight: obj.peso.value,
-                imc: obj.imc.value,
-                birthday: obj.fecha.value,
-            })
-            .then(function (response) {
-                console.log(response.data);
-                navigate("/login");
-            })
-            .catch(function (error) {
-                alert("Los datos son incorrectos");
-                if (error.response) {
-                    // POST response with a status code not in range 2xx
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                } else if (error.request) {
-                    // no response
-                    console.log(error.request);
-                    // instance of XMLHttpRequest in the browser
-                    // instance ofhttp.ClientRequest in node.js
-                } else {
-                    // Something wrong in setting up the request
-                    console.log("Error", error.message);
-                }
-                console.log(error.config);
-            });
+        console.log(obj);
+        // axios
+        //     .post(baseURL + `Client/CreateClient`, {
+        //         //Body
+                
+        //         "email": "ramsensei@estudiantec.cr",
+        //         "password": "dario1234",
+        //         "name": "Ramsés",
+        //         "lastname1": "Gutiérrez",
+        //         "lastname2": "Rodríguez",
+        //         "age": 20,
+        //         "birthdate": "2003-08-04T04:55:19.171Z",
+        //         "weight": 10,
+        //         "imc": 20,
+        //         "nutritionistcode": 123456,
+        //         "cardnumber": 125426,
+        //         "province": "San José",
+        //         "canton": "Perez Zeledon",
+        //         "district": "San Isidro de El General",
+        //         "picture": "g;hg;gojojgohfkgirhrghirh",
+        //         "adminid": 2,
+        //         "chargetypeid": 1
+
+        //     })
+        //     .then(function (response) {
+        //         console.log(response.data);
+        //         navigate("/login");
+        //     })
+        //     .catch(function (error) {
+        //         alert("Los datos son incorrectos");
+        //         if (error.response) {
+        //             // POST response with a status code not in range 2xx
+        //             console.log(error.response.data);
+        //             console.log(error.response.status);
+        //             console.log(error.response.headers);
+        //         } else if (error.request) {
+        //             // no response
+        //             console.log(error.request);
+        //             // instance of XMLHttpRequest in the browser
+        //             // instance ofhttp.ClientRequest in node.js
+        //         } else {
+        //             // Something wrong in setting up the request
+        //             console.log("Error", error.message);
+        //         }
+        //         console.log(error.config);
+        //     });
     };
     return (
         <div className="credentials p-5 d-flex">
             <img src={herbs} className="credentials-bg" />
             <form onSubmit={createClient} className="d-flex credentials-form">
                 {screens[pantalla].map((item) => (
-                    <div className="credentials-input">
-                        <label htmlFor={item}> {item} </label>
+                    <div className="credentials-input" key={item+"div"}>
+                        <label htmlFor={item} key={item+"label"}> {item} </label>
                         <input
                             type={
                                 item == "Nacimiento"
@@ -103,21 +149,24 @@ function SignUp(props) {
                             placeholder={item}
                             key={item}
                             id={item}
+                            ref={refs[item]}
                             className=""
                         />
                     </div>
                 ))}
                 {pantalla.includes("1") ? (
                     <Link
+                    key="2"
                         href={
                             pantalla == "C1"
-                                ? "/signup/cliente-2"
-                                : "/signup/nutricionista-2"
+                                ? "/signup/C2"
+                                : "/signup/N2"
                         }
                     >
                         <Button
                             variant="outline-secondary"
                             className="btn-general"
+                            key="btnSig"
                         >
                             Siguiente
                         </Button>
@@ -127,20 +176,22 @@ function SignUp(props) {
                         type="submit"
                         variant="outline-secondary"
                         className="btn-general"
+                        key="btnSign"
                     >
                         Registrarse
                     </Button>
                 )}
                 <Link
+                key="1"
                     href={
                         pantalla.includes("1")
                             ? "/signup/"
                             : pantalla == "C2"
-                            ? "/signup/cliente-1"
-                            : "/signup/nutricionista-1"
+                            ? "/signup/C1"
+                            : "/signup/N1"
                     }
                 >
-                    <Button variant="outline-secondary" className="btn-general">
+                    <Button variant="outline-secondary" className="btn-general" key="btnReg">
                         Regresar
                     </Button>
                 </Link>

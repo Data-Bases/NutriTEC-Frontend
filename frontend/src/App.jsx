@@ -189,24 +189,22 @@ function App() {
     const [count, setCount] = useState(0);
 
     return (
-        <>
-            <ProductManagement objetosBD={productos}></ProductManagement>
-            <TabBar></TabBar>
-        </>
-        // <Router matcher={customMatcher}>
-        //     <div>
-        //         <Switch>
-        //             <Route path="/" component={Welcome} />
-        //             <Route path="/login"><Login/></Route>
-        //             <Route path="/signup"><SignUpChoose/></Route>
-        //             <Route path="/signup/nutricionista-1"><SignUp pantalla="N1"/></Route>
-        //             <Route path="/signup/nutricionista-2"><SignUp pantalla="N2"/></Route>
-        //             <Route path="/signup/cliente-1"><SignUp pantalla="C1"/></Route>
-        //             <Route path="/signup/cliente-2"><SignUp pantalla="C2"/></Route>
-        //             <Route path="/:anything">404 Página no encontrada</Route>
-        //         </Switch>
-        //     </div>
-        // </Router>
+        // <>
+        //     <ProductManagement objetosBD={productos}></ProductManagement>
+        //     <TabBar></TabBar>
+        // </>
+        <Router matcher={customMatcher}>
+            <div>
+                <TabBar/>
+                <Switch>
+                    <Route path="/" component={Welcome} />
+                    <Route path="/login"><Login/></Route>
+                    <Route path="/signup"><SignUpChoose/></Route>
+                    <Route path="/signup/:screen">{(props)=><SignUp pantalla={props.screen}/>}</Route>
+                    <Route path="/:anything">404 Página no encontrada</Route>
+                </Switch>
+            </div>
+        </Router>
     );
 }
 
