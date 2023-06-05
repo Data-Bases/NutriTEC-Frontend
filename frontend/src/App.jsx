@@ -9,9 +9,9 @@ import SignUpChoose from "./components/SingUpChoose";
 
 import ProductList from './components/ProductList';
 
-import ProductManagement from './components/ProductManagement';
-import InformationRecord from './components/InformationRecord';
-import NutricionalProducts from './components/NutricionalProducts';
+import AdminProductManagement from './components/AdminProductManagement';
+import NutritionistProductManagement from './components/NutritionistProductManagement.jsx';
+import CustomerProductManagement from './components/CustomerProductManagement';
 import TabBar from './components/NavigationBar';
 
 import { pathToRegexp } from "path-to-regexp";
@@ -191,10 +191,9 @@ function App() {
 
     return (
         <>
-            {/* <ProductManagement productos={productos}></ProductManagement> */}
-            {/* <InformationRecord productos={productos}></InformationRecord> */}
-            <NutricionalProducts productos={productos}></NutricionalProducts>
-
+            {/* <AdminProductManagement productos={productos}></AdminProductManagement> */}
+            {/* <NutritionistProductManagement productos={productos}></NutritionistProductManagement> */}
+            <CustomerProductManagement productos={productos}></CustomerProductManagement>
             <TabBar></TabBar>
         </>
     );

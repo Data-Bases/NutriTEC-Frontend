@@ -7,7 +7,7 @@ import RecipeCreator from './RecipeCreator';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function ProductManagement({ productos }) {
+function CustomerProductManagement({ productos }) {
 
     const [selectedRecipe, setSelectedRecipe] = useState(null);
 
@@ -20,7 +20,7 @@ function ProductManagement({ productos }) {
     }
 
     return (
-        <div>
+        <>
             <ProductList productos={productos}></ProductList>
             <hr />
             <Container
@@ -44,8 +44,8 @@ function ProductManagement({ productos }) {
                     </div>
                 </div>
             </Container>
-        </div>
+        </>
     );
 }
 
-export default ProductManagement;
+export default CustomerProductManagement;

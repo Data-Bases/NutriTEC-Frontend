@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import RecipeCreator from './RecipeCreator';
 
-function InformationRecord({ productos }) {
+function CustomerInformationRecord({ productos }) {
     const [selectedFood, setSelectedFood] = useState(null);
     const [selectedRecipe, setSelectedRecipe] = useState(null);
 
@@ -140,4 +140,4 @@ function InformationRecord({ productos }) {
     );
 }
 
-export default InformationRecord;
+export default CustomerInformationRecord;

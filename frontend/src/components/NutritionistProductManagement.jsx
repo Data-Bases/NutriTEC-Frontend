@@ -3,13 +3,13 @@ import ProductList from './ProductList';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function NutricionalProducts({ productos }) {
+function NutritionistProductManagement({ productos }) {
 
     return (
-        <div>
+        <>
             <ProductList productos={productos}></ProductList>
-        </div>
+        </>
     );
 }
 
-export default NutricionalProducts;
+export default NutritionistProductManagement;
