@@ -103,66 +103,90 @@ function SignUp(props) {
         "% Grasa": React.createRef(),
     };
 
-
     const createUser = () => {
         let apellido1 = datos.Apellidos.split(" ")[0];
         let apellido2 = datos.Apellidos.split(" ")[1];
-        console.log(apellido1, apellido2);
-        console.log(datos.FotoEncoded);
+        // console.log(apellido1, apellido2);
+        // console.log(datos.FotoEncoded);
         if (pantalla == "N2") {
-            
             const body = {
-                
-                "email": datos.Email,
-                "password": datos.Contraseña,
-                "name": datos.Nombre,
-                "lastname1": apellido1,
-                "lastname2": apellido2 ? apellido2 : "",
-                "birthdate": datos.Nacimiento,
-                "weight": datos.Peso,
-                "imc": datos.IMC,
-                "nutritionistcode": datos["Codigo Nutricionista"],
-                "cardnumber": datos.Tarjeta,
-                "province": datos.Provincia,
-                "canton": datos.Canton,
-                "district": datos.Distrito,
-                "picture": datos.FotoEncoded,
-                "adminid": 1,
-                "chargetypeid": 1
-                  
-            }
+                email: datos.Email,
+                password: datos.Contraseña,
+                name: datos.Nombre,
+                lastname1: apellido1,
+                lastname2: apellido2 ? apellido2 : "",
+                birthdate: datos.Nacimiento,
+                weight: datos.Peso,
+                imc: datos.IMC,
+                nutritionistcode: datos["Codigo Nutricionista"],
+                cardnumber: datos.Tarjeta,
+                province: datos.Provincia,
+                canton: datos.Canton,
+                district: datos.Distrito,
+                picture: datos.FotoEncoded,
+                adminid: 1,
+                chargetypeid: 1,
+            };
 
             console.log(body);
 
-            axios.post(baseURL + `/nutritionist/NutritionistSignUp`, body
-            ).then(function (response) {
-                console.log("Enviado", response.data);
-                localStorage.setItem("userId", response.data.id);
-                localStorage.setItem("userType", response.data.userType);
-                switch (response.data.userType) {
-                    case "N":
-                        navigate("/nutricionista");
-                        break;
-                    case "P":
-                        navigate("/client");
-                        break;
-                    case "A":
-                        navigate("/admin");
-                        break;
-                    default:
-                        alert("Error: Unknown user type);");
-                        return;
-                }}).catch(function (error) {
-                    if (error.response.status == 401) {	
+            axios
+                .post(baseURL + `/nutritionist/NutritionistSignUp`, body)
+                .then(function (response) {
+                    console.log("Enviado", response.data);
+                    navigate("/login");
+                })
+                .catch(function (error) {
+                    if (error.response.status == 401) {
                         alert("Error, Credenciales Inválidas");
-                    }
-                    else if (error.response) {
+                    } else if (error.response) {
                         alert(
                             "El servidor no respondió correctamente, codigo de error: " +
                                 error.response.status
                         );
+                    } else if (error.request) {
+                        // no response
+                        console.log(error.request);
+                        alert("Error al conectar con el Servidor");
+                        // instance of XMLHttpRequest in the browser
+                        // instance ofhttp.ClientRequest in node.js
+                    } else {
+                        // Something wrong in setting up the request
+                        console.log("Error", error.message);
                     }
-                    else if (error.request) {
+                });
+        } else if (pantalla == "C2") {
+            let apellido1 = datos.Apellidos.split(" ")[0];
+            let apellido2 = datos.Apellidos.split(" ")[1];
+            const body = {
+                nutriid: 0,
+                email: datos.Email,
+                name: datos.Nombre,
+                lastname1: apellido1,
+                lastname2: apellido2,
+                birthdate: datos.Nacimiento,
+                password: datos.Contraseña,
+                country: datos.Pais,
+                caloriesintake: datos["Calorias Máximas"]
+            };
+
+            console.log(body);
+
+            axios
+                .post(baseURL + `/nutritec/patient/PatientSignUp`, body)
+                .then(function (response) {
+                    console.log("Enviado", response.data);
+                    navigate("/login");
+                })
+                .catch(function (error) {
+                    if (error.response.status == 401) {
+                        alert("Error, Credenciales Inválidas");
+                    } else if (error.response) {
+                        alert(
+                            "El servidor no respondió correctamente, codigo de error: " +
+                                error.response.status
+                        );
+                    } else if (error.request) {
                         // no response
                         console.log(error.request);
                         alert("Error al conectar con el Servidor");
@@ -201,9 +225,11 @@ function SignUp(props) {
                                 // event.preventDefault();
                                 if (item == "Foto") {
                                     datos[item] = event.target.files[0];
-                                    blobToBase64(event.target.files[0]).then((result) => {
-                                        datos["FotoEncoded"] = result;
-                                    });
+                                    blobToBase64(event.target.files[0]).then(
+                                        (result) => {
+                                            datos["FotoEncoded"] = result;
+                                        }
+                                    );
                                 } else {
                                     datos[item] = event.target.value;
                                 }
