@@ -15,7 +15,7 @@ function SignUpChoose() {
             <img src={herbs} className="credentials-bg" />
             <div className="credentials-card">
                 <div className="credentials-container">
-                    <Link to="/signup/nutricionista-1">
+                    <Link to="/signup/N1">
                         <img src={nutri} />
                         <div class="overlay-left">
                             <div class="overlay-text">Nutricionista</div>
@@ -25,7 +25,7 @@ function SignUpChoose() {
             </div>
             <div className="credentials-card">
                 <div className="credentials-container">
-                    <Link to="/signup/cliente-1">
+                    <Link to="/signup/C1">
                         <img src={cliente} />
                         <div class="overlay-rigth">
                             <div class="overlay-text">Cliente</div>
