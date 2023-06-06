@@ -18,7 +18,10 @@ function ProductList({ productos, setProductFunction }) {
 
     const handleSelectedProduct = (producto) => {
         setSelectedProduct(producto)
-        setProductFunction(producto)
+
+        if (setProductFunction != null) {
+            setProductFunction(producto)
+        }
 
         setEditedID(producto.identificador)
         setEditedEnergia(producto.energia)
@@ -55,7 +58,6 @@ function ProductList({ productos, setProductFunction }) {
 
     return (
         <>
-            <hr />
             <Container
                 className="d-flex"
                 style={{

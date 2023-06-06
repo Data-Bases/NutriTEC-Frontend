@@ -8,8 +8,9 @@ import SignUpChoose from "./components/SingUpChoose";
 
 import ProductList from './components/ProductList';
 
-import ProductManagement from './components/ProductManagement';
-
+import AdminProductManagement from './components/AdminProductManagement';
+import NutritionistProductManagement from './components/NutritionistProductManagement.jsx';
+import CustomerProductManagement from './components/CustomerProductManagement';
 import TabBar from './components/NavigationBar';
 
 import { pathToRegexp } from "path-to-regexp";

@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import { Form, Button, Dropdown } from 'react-bootstrap';
 
-function RecipeCreator({ producto }) {
+function RecipeCreator({ productos, setRecipeFunction }) {
+    const [selectedProduct, setSelectedProduct] = useState(null);
     const [porcion, setPorcion] = useState('');
     const [gramos, setGramos] = useState('');
     const [recipeProducts, setRecipeProducts] = useState([]);
 
-    const handleAddProductClick = () => {
+
+    const handleDropdownProduct = (product) => {
+        setSelectedProduct(product);
+    }
+
+    const handleButtonAddProduct = () => {
         const newProduct = {
-            product: producto,
+            product: selectedProduct,
             porcion: porcion,
             gramos: gramos
         };
@@ -17,17 +23,21 @@ function RecipeCreator({ producto }) {
         setPorcion('');
         setGramos('');
 
-        console.log(recipeProducts)
+        if (setRecipeFunction != null) {
+            setRecipeFunction(recipeProducts);
+        }
     };
 
     return (
-        <>
-            <hr />
-
+        <div>
             <div className="d-flex" style={{ justifyContent: 'start', alignItems: 'center' }}>
-                <div className="d-flex" style={{ marginRight: '10px', justifyContent: 'center', width: '500px', padding: '10px', borderRadius: '5px', boxShadow: '5px 5px 10px' }}>
-                    {producto ? <div>{producto.nombre}</div> : <div>Producto</div>}
-                </div>
+                <DropdownButton style={{ marginRight: '10px' }} id="product-dropdown" title={selectedProduct ? selectedProduct.nombre : 'Producto'}>
+                    {productos.map((producto, index) => (
+                        <Dropdown.Item key={index} onClick={() => handleDropdownProduct(producto)}>
+                            {producto.nombre}
+                        </Dropdown.Item>
+                    ))}
+                </DropdownButton>
                 <Form.Control
                     style={{ marginRight: '10px' }}
                     placeholder="Porción"
@@ -36,24 +46,27 @@ function RecipeCreator({ producto }) {
                 />
                 <Form.Control
                     style={{ marginRight: '10px' }}
-                    placeholder="g"
+                    placeholder="gramos"
                     value={gramos}
                     onChange={(e) => setGramos(e.target.value)}
                 />
-                <Button onClick={handleAddProductClick} style={{ background: '#1382C9' }}> + </Button>
+                <Button onClick={handleButtonAddProduct}> + </Button>
+            </div>
 
-                <Dropdown style={{marginLeft:'10px'}}>
-                    <Dropdown.Toggle variant="primary" id="dropdown-basic"> Receta </Dropdown.Toggle>
-                    <Dropdown.Menu >
+            <div className="d-flex" style={{ justifyContent: 'center', alignItems: 'center', marginTop: '20px'}}>
+                <Dropdown >
+                    <Dropdown.Toggle  style={{ width:'600px'}} variant="primary" id="dropdown-basic"> Receta </Dropdown.Toggle>
+                    <Dropdown.Menu>
                         {recipeProducts.map((recipeProduct, index) => (
                             <Dropdown.Item key={index}>{recipeProduct.product.nombre + ", porciones: " + recipeProduct.porcion + ", gramos: " + recipeProduct.gramos}</Dropdown.Item>
                         ))}
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
+        </div>
 
 
-        </>
+
     );
 }
 
