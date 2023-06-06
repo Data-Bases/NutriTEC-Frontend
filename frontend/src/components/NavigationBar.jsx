@@ -1,6 +1,5 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useLocation } from "wouter";
 
 const names = {
@@ -34,9 +33,9 @@ function NavigationBar() {
   const actual = getActual();
 
   const handleSelect = (eventKey) => {
-    console.log(eventKey);
+    // console.log(eventKey);
   };
-  console.log(actual);
+  // console.log(actual);
   return (
     <Navbar bg="success" variant="light" fixed="top">
       <Nav className="mx-auto" onSelect={handleSelect}>

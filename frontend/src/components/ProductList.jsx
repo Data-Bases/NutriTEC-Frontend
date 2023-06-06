@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ObjectList from './ObjectList';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ProductList({ productos, setProductFunction }) {
     const [selectedProduct, setSelectedProduct] = useState(null);

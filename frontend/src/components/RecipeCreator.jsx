@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Button, Dropdown } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function RecipeCreator({ producto }) {
     const [porcion, setPorcion] = useState('');

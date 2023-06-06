@@ -1,7 +1,6 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
-import "./styles/App.scss";
 import Login from "./components/LogIn";
 import SignUp from "./components/SingUp";
 import Welcome from "./components/Welcome";
@@ -16,6 +15,7 @@ import TabBar from './components/NavigationBar';
 import { pathToRegexp } from "path-to-regexp";
 import { Router, Switch, Route, Link, useRoute } from "wouter";
 import makeCachedMatcher from "wouter/matcher";
+import "./styles/App.scss";
 /*
  * This function specifies how strings like /app/:users/:items* are
  * transformed into regular expressions.

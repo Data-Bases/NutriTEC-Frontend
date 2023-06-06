@@ -13,32 +13,45 @@ function Login() {
     const [password, setPassword] = useState("");
     const [location, navigate] = useLocation();
 
+
     const sendData = () => {
         axios
             .get(
-                baseURL + `Employee/EmployeeLogIn/${user}?password=${password}`
+                baseURL +
+                    `/credentials/LogIn?email=${encodeURI(
+                        user
+                    )}&password=${password}`
             )
             .then(function (response) {
-                // console.log("Enviado", response)
-                if (response.data.id > 0) {
-                    //Se almacena el token en el navegador
-                    //   localStorage.setItem("userId", response.data.id);
-                    //   navigate("/gestion/Información")
-                } else {
-                    alert("Usuario o contraseña incorrectos");
+                console.log("Enviado", response.data);
+                localStorage.setItem("userId", response.data.id);
+                localStorage.setItem("userType", response.data.userType);
+                switch (response.data.userType) {
+                    case "N":
+                        navigate("/nutricionista");
+                        break;
+                    case "P":
+                        navigate("/client");
+                        break;
+                    case "A":
+                        navigate("/admin");
+                        break;
+                    default:
+                        alert("Error: Unknown user type);");
+                        return;
                 }
             })
             .catch(function (error) {
-                if (error.response) {
-                    // GET response with a status code not in range 2xx
-                    console.log("Error", error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
+                if (error.response.status == 401) {	
+                    alert("Error, Credenciales Inválidas");
+                }
+                else if (error.response) {
                     alert(
                         "El servidor no respondió correctamente, codigo de error: " +
                             error.response.status
                     );
-                } else if (error.request) {
+                }
+                else if (error.request) {
                     // no response
                     console.log(error.request);
                     alert("Error al conectar con el Servidor");
@@ -48,7 +61,6 @@ function Login() {
                     // Something wrong in setting up the request
                     console.log("Error", error.message);
                 }
-                console.log(error.config);
             });
     };
 
@@ -58,7 +70,7 @@ function Login() {
             <form className="text-light d-flex credentials-form">
                 <input
                     type="email"
-                    placeholder="Cédula"
+                    placeholder="Email"
                     onChange={(event) => setUser(event.target.value)}
                     className="credentials-input"
                 />
@@ -69,11 +81,11 @@ function Login() {
                     className="credentials-input"
                 />
                 <Button
-                    type="submit"
+                    onClick={sendData}
                     variant="outline-secondary"
                     className="btn-general"
                 >
-                  Ingresar
+                    Ingresar
                 </Button>
                 <Link href="/">
                     <Button variant="outline-secondary" className="btn-general">

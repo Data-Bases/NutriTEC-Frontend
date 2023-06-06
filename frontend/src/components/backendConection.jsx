@@ -1,5 +1,5 @@
 
-export const baseURL = "https://nutritecapi.azurewebsites.net/nutritec/admin/"
+export const baseURL = "https://nutritecapi.azurewebsites.net/nutritec"
 
 export const listaTramites = [
     "Información",

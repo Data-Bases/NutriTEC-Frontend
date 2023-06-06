@@ -4,7 +4,6 @@ import { Container, Form, Button } from 'react-bootstrap';
 import ProductList from './ProductList';
 import RecipeCreator from './RecipeCreator';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ProductManagement({ objetosBD }) {
     const [selectedProduct, setSelectedProduct] = useState(null);
