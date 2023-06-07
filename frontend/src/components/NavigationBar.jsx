@@ -10,15 +10,15 @@ const names = {
 
 const urls = {
   Generals:["/", "/login", "/signup"],
-  Client:["Inicio", "Registrar Info", "Gestion de Productos"],
-  Nutri:["Inicio", "Planes", "Gestion de Productos"]
+  Client:["/client", "/client/info", "/client/products"],
+  Nutri:["/nutricionist", "/nutricionist/plans", "/nutricionist/products"]
 }
 
 function NavigationBar() {
   const [location, setLocation] = useLocation();
   const getActual = () =>
   {
-    switch (location.split("/)")[0]) {
+    switch (location.split("/")[1]) {
       case "client":
           return "Client";
       case "nutricionist":

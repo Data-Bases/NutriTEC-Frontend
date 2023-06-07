@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import ObjectList from './ObjectList';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { baseURL } from './backendConection';
 
-function ProductList({ productos, setProductFunction }) {
+
+function ProductList({ productos, setProductFunction, updateProducts }) {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [editMode, setEditMode] = useState(false);
 
     const [editedID, setEditedID] = useState('');
+    const [editedDescripcion, setEditedDescripcion] = useState('');
     const [editedEnergia, setEditedEnergia] = useState('');
     const [editedGrasa, setEditedGrasa] = useState('');
     const [editedSodio, setEditedSodio] = useState('');
@@ -16,6 +20,8 @@ function ProductList({ productos, setProductFunction }) {
     const [editedCalcio, setEditedCalcio] = useState('');
     const [editedHierro, setEditedHierro] = useState('');
 
+    // console.log(productos);
+
     const handleSelectedProduct = (producto) => {
         setSelectedProduct(producto)
 
@@ -24,6 +30,7 @@ function ProductList({ productos, setProductFunction }) {
         }
 
         setEditedID(producto.identificador)
+        setEditedDescripcion(producto.descripcion)
         setEditedEnergia(producto.energia)
         setEditedGrasa(producto.grasa)
         setEditedSodio(producto.sodio)
@@ -41,18 +48,55 @@ function ProductList({ productos, setProductFunction }) {
     };
 
     const handleSaveClick = () => {
-
+        updateProducts();
         // ---------- SET ---------- (informacion)
-        selectedProduct.identificador = editedID // En vez de esto se puede hacer un GET (mas seguro, menos rapido)
-        selectedProduct.energia = editedEnergia
-        selectedProduct.grasa = editedGrasa
-        selectedProduct.sodio = editedSodio
-        selectedProduct.carbohidratos = editedCarbohidratos
-        selectedProduct.proteina = editedProteina
-        selectedProduct.vitaminas = editedVitaminas
-        selectedProduct.calcio = editedCalcio
-        selectedProduct.hierro = editedHierro
+        axios.put(
+            baseURL + `/product/EditProduct`,
+            {
+                name: selectedProduct.nombre,
+                description: editedDescripcion,
+                id: editedID,
+                energy: editedEnergia,
+                fat: editedGrasa,
+                sodium: editedSodio,
+                carbs: editedCarbohidratos,
+                protein: editedProteina,
+                calcium: editedCalcio,
+                iron: editedHierro,
+                portionSize: selectedProduct.porcion
+            },
+          ).then(function (response) {
+          
+            selectedProduct.identificador = editedID
+            selectedProduct.descripcion = editedDescripcion
+            selectedProduct.energia = editedEnergia
+            selectedProduct.grasa = editedGrasa
+            selectedProduct.sodio = editedSodio
+            selectedProduct.carbohidratos = editedCarbohidratos
+            selectedProduct.proteina = editedProteina
+            selectedProduct.vitaminas = editedVitaminas
+            selectedProduct.calcio = editedCalcio
+            selectedProduct.hierro = editedHierro
 
+            setSelectedProduct(selectedProduct);
+            updateProducts();
+          
+          }).catch(function (error) {
+            if (error.response) { // PUT response with a status code not in range 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) { // no response
+              console.log(error.request);
+              // instance of XMLHttpRequest in the browser
+              // instance ofhttp.ClientRequest in node.js
+            } else { // Something wrong in setting up the request
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
+          });
+        
+        setEditMode(true);
         setEditMode(false);
     };
 
@@ -76,12 +120,12 @@ function ProductList({ productos, setProductFunction }) {
                             {editMode ?
                                 <div className="d-flex" style={{ justifyContent: 'start', flexDirection: 'column' }}>
                                     <Form.Control placeholder='ID' value={editedID} onChange={(e) => setEditedID(e.target.value)} />
+                                    <Form.Control placeholder='Descripcion' value={editedDescripcion} onChange={(e) => setEditedDescripcion(e.target.value)} />
                                     <Form.Control placeholder='Energia' value={editedEnergia} onChange={(e) => setEditedEnergia(e.target.value)} />
                                     <Form.Control placeholder='Grasa' value={editedGrasa} onChange={(e) => setEditedGrasa(e.target.value)} />
                                     <Form.Control placeholder='Sodio' value={editedSodio} onChange={(e) => setEditedSodio(e.target.value)} />
                                     <Form.Control placeholder='Carbohidratos' value={editedCarbohidratos} onChange={(e) => setEditedCarbohidratos(e.target.value)} />
                                     <Form.Control placeholder='Proteina' value={editedProteina} onChange={(e) => setEditedProteina(e.target.value)} />
-                                    <Form.Control placeholder='Vitaminas' value={editedVitaminas} onChange={(e) => setEditedVitaminas(e.target.value)} />
                                     <Form.Control placeholder='Calcio' value={editedCalcio} onChange={(e) => setEditedCalcio(e.target.value)} />
                                     <Form.Control placeholder='Hierro' value={editedHierro} onChange={(e) => setEditedHierro(e.target.value)} />
                                     <Button onClick={handleSaveClick} style={{ width: '100%', background: '#1382C9' }}> ✓ </Button>
@@ -89,12 +133,12 @@ function ProductList({ productos, setProductFunction }) {
                                 :
                                 <div className="d-flex" style={{ justifyContent: 'start', flexDirection: 'column' }}>
                                     <p style={{ whiteSpace: "pre-wrap", overflowWrap: 'break-word' }}>ID: {selectedProduct.identificador}</p>
+                                    <p style={{ whiteSpace: "pre-wrap", overflowWrap: 'break-word' }}>Descripcion: {selectedProduct.descripcion}</p>
                                     <p style={{ whiteSpace: "pre-wrap", overflowWrap: 'break-word' }}>Energia: {selectedProduct.energia}</p>
                                     <p style={{ whiteSpace: "pre-wrap", overflowWrap: 'break-word' }}>Grasa: {selectedProduct.grasa}</p>
                                     <p style={{ whiteSpace: "pre-wrap", overflowWrap: 'break-word' }}>Sodio: {selectedProduct.sodio}</p>
                                     <p style={{ whiteSpace: "pre-wrap", overflowWrap: 'break-word' }}>Carbohidratos: {selectedProduct.carbohidratos}</p>
                                     <p style={{ whiteSpace: "pre-wrap", overflowWrap: 'break-word' }}>Proteina: {selectedProduct.proteina}</p>
-                                    <p style={{ whiteSpace: "pre-wrap", overflowWrap: 'break-word' }}>Vitaminas: {selectedProduct.vitaminas}</p>
                                     <p style={{ whiteSpace: "pre-wrap", overflowWrap: 'break-word' }}>Calcio: {selectedProduct.calcio}</p>
                                     <p style={{ whiteSpace: "pre-wrap", overflowWrap: 'break-word' }}>Hierro: {selectedProduct.hierro}</p>
                                     <Button onClick={handleEditClick} style={{ width: '100%', background: '#1382C9' }}> ✎ </Button>

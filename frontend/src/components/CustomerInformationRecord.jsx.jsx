@@ -1,18 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Dropdown, DropdownButton } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import axios from 'axios';
+import { baseURL } from './backendConection';
 import RecipeCreator from './RecipeCreator';
 
-function CustomerInformationRecord({ productos }) {
+
+
+function CustomerInformationRecord() {
+    const [productos, setProductos] = useState([]);
     const [selectedFood, setSelectedFood] = useState(null);
     const [selectedRecipe, setSelectedRecipe] = useState(null);
+    const [updateState, setUpdateState] = useState(true);
+
+    const upd = () => {
+        setUpdateState(!updateState);
+    }
 
     const [cuello, setCuello] = useState('');
     const [cintura, setCintura] = useState('');
     const [cadera, setCadera] = useState('');
     const [musculo, setMusculo] = useState('');
     const [grasa, setGrasa] = useState('');
+
+    useEffect(()=>{
+        // console.log(localStorage.getItem("userId"));
+        axios.get(baseURL + `/product/GetAllProducts`)
+        .then((response) => {
+            // console.log(response.data);
+            setProductos(response.data);
+        }).catch(function (error) {
+            if (error.response) { // GET response with a status code not in range 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) { // no response
+              console.log(error.request);
+              // instance of XMLHttpRequest in the browser
+              // instance ofhttp.ClientRequest in node.js
+            } else { // Something wrong in setting up the request
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
+          });
+    }, [updateState]);
 
     const handleSelectedRecipe = (recipe) => {
         console.log(recipe)

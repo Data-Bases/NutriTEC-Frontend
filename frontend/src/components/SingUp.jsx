@@ -25,7 +25,6 @@ const screens = {
     C1: [
         "Nombre",
         "Apellidos",
-        "Cedula",
         "Pais",
         "Calorias Máximas",
         "Nacimiento",
@@ -159,7 +158,7 @@ function SignUp(props) {
             let apellido1 = datos.Apellidos.split(" ")[0];
             let apellido2 = datos.Apellidos.split(" ")[1];
             const body = {
-                nutriid: 0,
+                nutriid: null,
                 email: datos.Email,
                 name: datos.Nombre,
                 lastname1: apellido1,

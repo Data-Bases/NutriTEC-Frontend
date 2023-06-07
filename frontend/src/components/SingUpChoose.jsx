@@ -17,7 +17,7 @@ function SignUpChoose() {
                 <div className="credentials-container">
                     <Link to="/signup/N1">
                         <img src={nutri} />
-                        <div class="overlay-left">
+                        <div className="overlay-left">
                             <div class="overlay-text">Nutricionista</div>
                         </div>
                     </Link>

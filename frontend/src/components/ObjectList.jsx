@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
+import axios from 'axios';
+import { baseURL } from './backendConection';
+
 
 function ObjectList({ objetos, setObjectFunction }) {
 
@@ -11,18 +14,53 @@ function ObjectList({ objetos, setObjectFunction }) {
     const [newID, setNewID] = useState(''); // ID del nuevo objeto
     const [isAddDisabled, setIsAddDisabled] = useState(true); // Valor booleano para saber si el boton '+' debe estar descativado
 
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     // Funciones
     const handleClick = (objeto) => { // Controlador al hacer click en un objeto de la lista
-        setSelectedID(objeto.identificador);
+        setSelectedID(objeto.id);
+        axios.get(baseURL + `/product/GetProductById/${objeto.id}`)
+            .then(function (response) {
 
-        if (setObjectFunction != null) {
-            setObjectFunction(objeto);
-        }
+            console.log(response.data);
+            let obj = response.data
+            setObjectFunction({
+                nombre: obj.name,
+                identificador: obj.id,
+                descripcion: obj.description,
+                energia: obj.energy,
+                grasa: obj.fat,
+                sodio: obj.sodium,
+                carbohidratos: obj.carbs,
+                proteina: obj.protein,
+                calcio: obj.calcium,
+                hierro: obj.iron,
+                porcion: obj.portionSize
+            })
+            
+            })
+            .catch(function (error) {
+            if (error.response) { // GET response with a status code not in range 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) { // no response
+                console.log(error.request);
+                // instance of XMLHttpRequest in the browser
+                // instance ofhttp.ClientRequest in node.js
+            } else { // Something wrong in setting up the request
+                console.log('Error', error.message);
+            }
+            console.log(error.config);
+            });
 
     };
 
     const handleDoubleClick = (objeto) => { // Controlador al hacer doble click en un objeto de la lista
-        setEditedName(objeto.nombre);
+        setEditedName(objeto.name);
         setIsEditing(true);
     };
 
@@ -34,12 +72,12 @@ function ObjectList({ objetos, setObjectFunction }) {
 
         // ---------- SET ----------
 
-        objeto.nombre = editedName; // En vez de esto se puede hacer un GET (mas seguro, menos rapido)
+        objeto.name = editedName; // En vez de esto se puede hacer un GET (mas seguro, menos rapido)
         setIsEditing(false);
     };
 
     const handleDelete = (objeto) => { // Controlador para eliminar un objeto
-        const index = objetos.findIndex((o) => o.identificador === objeto.identificador);
+        const index = objetos.findIndex((o) => o.id === objeto.id);
 
         // ---------- SET ----------
 
@@ -69,13 +107,14 @@ function ObjectList({ objetos, setObjectFunction }) {
 
     const handleNewSubmit = (event) => { // Controlador para guardar el nuevo objeto
         event.preventDefault();
+        handleShow();
 
         // ---------- PUT ----------
 
-        objetos.push({ // En vez de esto se puede hacer un GET (mas seguro, menos rapido)
-            nombre: newName,
-            identificador: newID
-        });
+        // objetos.push({ // En vez de esto se puede hacer un GET (mas seguro, menos rapido)
+        //     nombre: newName,
+        //     identificador: newID
+        // });
 
         setNewName('');
         setNewID('');
@@ -84,7 +123,7 @@ function ObjectList({ objetos, setObjectFunction }) {
 
     const renderObjetos = () => {
         return objetos.map((objeto, i) => {
-            if (isEditing && (selectedID === objeto.identificador)) { // Renderizar el objeto al que se le hace doble click si se esta editando y hay un objeto seleccionado
+            if (isEditing && (selectedID === objeto.id)) { // Renderizar el objeto al que se le hace doble click si se esta editando y hay un objeto seleccionado
                 return (
                     <form onSubmit={() => handleEditSubmit(objeto)} key={i}>
                         <input
@@ -101,19 +140,55 @@ function ObjectList({ objetos, setObjectFunction }) {
             else { // Renderizar el objeto al que se le hace click
                 return (
                     <Button
-                        key={objeto.identificador}
-                        variant={selectedID === objeto.identificador ? 'primary' : 'light'}
+                        key={objeto.id}
+                        variant={selectedID === objeto.id ? 'primary' : 'light'}
                         className="mb-2"
                         style={{ width: '100%' }}
                         onClick={() => handleClick(objeto)}
                         onDoubleClick={() => handleDoubleClick(objeto)}
                     >
-                        {objeto.nombre}
+                        {objeto.name}
                     </Button>
                 );
             }
         });
     };
+
+    const renderModal = () => (
+        <Modal show={show} onHide={handleClose} key={"modal"} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="name@example.com"
+                autoFocus
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>Example textarea</Form.Label>
+              <Form.Control as="textarea" rows={3} />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+        )
+    
 
     // Return
     return (
@@ -126,6 +201,7 @@ function ObjectList({ objetos, setObjectFunction }) {
                 border: '1px solid black',
             }}
         >
+            {renderModal()}
             <div style={{ overflowY: 'auto', maxHeight: '450px' }}>
                 {renderObjetos()}
             </div>

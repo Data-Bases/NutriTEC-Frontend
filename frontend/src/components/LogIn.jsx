@@ -28,7 +28,7 @@ function Login() {
                 localStorage.setItem("userType", response.data.userType);
                 switch (response.data.userType) {
                     case "N":
-                        navigate("/nutricionista");
+                        navigate("/nutricionist");
                         break;
                     case "P":
                         navigate("/client");

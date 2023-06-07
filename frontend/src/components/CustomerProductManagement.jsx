@@ -1,13 +1,42 @@
-import React, { useState } from 'react';
-import { Container, Button } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Container, Button, DropdownButton} from 'react-bootstrap';
 
 
 import ProductList from './ProductList';
 import RecipeCreator from './RecipeCreator';
+import { baseURL } from './backendConection';
+import axios from 'axios';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-function CustomerProductManagement({ productos }) {
+function CustomerProductManagement() {
+    const [productos, setProductos] = useState([]);
+    const [updateState, setUpdateState] = useState(true);
+
+    const upd = () => {
+        setUpdateState(!updateState);
+    }
+
+    useEffect(()=>{
+        // console.log(localStorage.getItem("userId"));
+        axios.get(baseURL + `/product/GetAllProducts`)
+        .then((response) => {
+            // console.log(response.data);
+            setProductos(response.data);
+        }).catch(function (error) {
+            if (error.response) { // GET response with a status code not in range 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) { // no response
+              console.log(error.request);
+              // instance of XMLHttpRequest in the browser
+              // instance ofhttp.ClientRequest in node.js
+            } else { // Something wrong in setting up the request
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
+          });
+    }, [updateState]);
 
     const [selectedRecipe, setSelectedRecipe] = useState(null);
 
@@ -21,7 +50,7 @@ function CustomerProductManagement({ productos }) {
 
     return (
         <>
-            <ProductList productos={productos}></ProductList>
+            <ProductList productos={productos} updateProducts={upd}></ProductList>
             <hr />
             <Container
                 className="d-flex"
