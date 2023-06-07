@@ -30,10 +30,10 @@ function AdminProductManagement({ productos }) {
                 className="d-flex"
                 style={{
                     backgroundColor: 'lightgray',
-                    padding: '50px',
-                    width: '1000px',
+                    width: '600px',
+                    height: '600px',
                     borderRadius: '10px',
-                    justifyContent: 'center'
+                    justifyContent: 'space-between'
                 }}
             >
                 <div>

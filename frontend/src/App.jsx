@@ -7,12 +7,9 @@ import SignUp from "./components/SingUp";
 import Welcome from "./components/Welcome";
 import SignUpChoose from "./components/SingUpChoose";
 
-import ProductList from './components/ProductList';
-
-import AdminProductManagement from './components/AdminProductManagement';
-import NutritionistProductManagement from './components/NutritionistProductManagement.jsx';
-import CustomerProductManagement from './components/CustomerProductManagement';
-import TabBar from './components/NavigationBar';
+import CustomerInformationRecordView from './components/CustomerInformationRecordView';
+import CustomerProductManagementView from './components/CustomerProductManagementView';
+import CustomerRecipeManagementView from './components/CustomerRecipeManagementView';
 
 import { pathToRegexp } from "path-to-regexp";
 import { Router, Switch, Route, Link, useRoute } from "wouter";
@@ -27,6 +24,7 @@ import makeCachedMatcher from "wouter/matcher";
  * @param {string} path — a path like "/:foo/:bar"
  * @return {{ keys: [], regexp: RegExp }}
  */
+
 const convertPathToRegexp = (path) => {
     let keys = [];
 
@@ -40,148 +38,151 @@ const customMatcher = makeCachedMatcher(convertPathToRegexp);
 
 const productos = [
     {
-        nombre: 'producto 1',
         identificador: '1001',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
+        nombre: 'producto 1',
+        gramos: '###',
+        energia: '###',
+        grasa: '###',
+        sodio: '###',
+        carbohidratos: '###',
+        proteina: '###',
+        calcio: '###X',
+        hierro: '###X'
     },
     {
-        nombre: 'producto 2',
         identificador: '1002',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
+        nombre: 'producto 2',
+        gramos: '###',
+        energia: '###',
+        grasa: '###',
+        sodio: '###',
+        carbohidratos: '###',
+        proteina: '###',
+        calcio: '###X',
+        hierro: '###X'
     },
     {
-        nombre: 'producto 3',
         identificador: '1003',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
+        nombre: 'producto 3',
+        gramos: '###',
+        energia: '###',
+        grasa: '###',
+        sodio: '###',
+        carbohidratos: '###',
+        proteina: '###',
+        calcio: '###X',
+        hierro: '###X'
+    }
+];
+
+const recetas = [
+    {
+        identificador: '2001',
+        nombre: 'receta 1',
+        gramos: '###',
+        energia: '###',
+        grasa: '###',
+        sodio: '###',
+        carbohidratos: '###',
+        proteina: '###',
+        calcio: '###X',
+        hierro: '###X',
+        productos: [{
+            identificador: '1001',
+            nombre: 'producto 1',
+            gramos: '100',
+            energia: '###',
+            grasa: '###',
+            sodio: '###',
+            carbohidratos: '###',
+            proteina: '###',
+            calcio: '###X',
+            hierro: '###X'
+        },
+        {
+            identificador: '1002',
+            nombre: 'producto 2',
+            gramos: '1502',
+            energia: '###',
+            grasa: '###',
+            sodio: '###',
+            carbohidratos: '###',
+            proteina: '###',
+            calcio: '###X',
+            hierro: '###X'
+        }]
     },
     {
-        nombre: 'producto 4',
-        identificador: '1004',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
+        identificador: '2002',
+        nombre: 'receta 2',
+        gramos: '###',
+        energia: '###',
+        grasa: '###',
+        sodio: '###',
+        carbohidratos: '###',
+        proteina: '###',
+        calcio: '###X',
+        hierro: '###X',
+        productos: [{
+            identificador: '1001',
+            nombre: 'producto 2',
+            gramos: '120',
+            energia: '###',
+            grasa: '###',
+            sodio: '###',
+            carbohidratos: '###',
+            proteina: '###',
+            calcio: '###X',
+            hierro: '###X'
+        },
+        {
+            identificador: '1002',
+            nombre: 'producto 3',
+            gramos: '340',
+            energia: '###',
+            grasa: '###',
+            sodio: '###',
+            carbohidratos: '###',
+            proteina: '###',
+            calcio: '###X',
+            hierro: '###X'
+        }]
     },
     {
-        nombre: 'producto 5',
-        identificador: '1005',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
-    },
-    {
-        nombre: 'producto 6',
-        identificador: '1006',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
-    },
-    {
-        nombre: 'producto 7',
-        identificador: '1007',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
-    },
-    {
-        nombre: 'producto 8',
-        identificador: '1008',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
-    },
-    {
-        nombre: 'producto 9',
-        identificador: '1009',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
-    },
-    {
-        nombre: 'producto 10',
-        identificador: '10010',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
-    },
-    {
-        nombre: 'producto 11',
-        identificador: '10011',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
-    },
-    {
-        nombre: 'producto 12',
-        identificador: '10012',
-        energia: 'XXXXXXXXXX',
-        grasa: 'XXXXXXXXXX',
-        sodio: 'XXXXXXXXXX',
-        carbohidratos: 'XXXXXXXXXX',
-        proteina: 'XXXXXXXXXX',
-        vitaminas: 'XXXXXXXXXXX',
-        calcio: 'XXXXXXXXXXX',
-        hierro: 'XXXXXXXXXXX'
+        identificador: '2003',
+        nombre: 'receta 3',
+        gramos: '###',
+        energia: '###',
+        grasa: '###',
+        sodio: '###',
+        carbohidratos: '###',
+        proteina: '###',
+        calcio: '###X',
+        hierro: '###X',
+        productos: [{
+            identificador: '1001',
+            nombre: 'producto 1',
+            gramos: '340',
+            energia: '###',
+            grasa: '###',
+            sodio: '###',
+            carbohidratos: '###',
+            proteina: '###',
+            calcio: '###X',
+            hierro: '###X'
+        },
+        {
+            identificador: '1002',
+            nombre: 'producto 3',
+            gramos: '170',
+            energia: '###',
+            grasa: '###',
+            sodio: '###',
+            carbohidratos: '###',
+            proteina: '###',
+            calcio: '###X',
+            hierro: '###X'
+        }]
     }
 ];
 
@@ -191,10 +192,9 @@ function App() {
 
     return (
         <>
-            {/* <AdminProductManagement productos={productos}></AdminProductManagement> */}
-            {/* <NutritionistProductManagement productos={productos}></NutritionistProductManagement> */}
-            <CustomerProductManagement productos={productos}></CustomerProductManagement>
-            <TabBar></TabBar>
+            {/* <CustomerInformationRecordView alimentos={[...productos, ...recetas]} ></CustomerInformationRecordView> */}
+            {/* <CustomerProductManagementView productos={productos}></CustomerProductManagementView> */}
+            <CustomerRecipeManagementView productos={productos} recetas={recetas}></CustomerRecipeManagementView>
         </>
     );
 }
