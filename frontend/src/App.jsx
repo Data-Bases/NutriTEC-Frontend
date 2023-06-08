@@ -13,6 +13,7 @@ import NutritionistProductManagement from './components/NutritionistProductManag
 import CustomerProductManagement from './components/CustomerProductManagement';
 import CustomerInformationRecord from './components/CustomerInformationRecord.jsx'
 import TabBar from './components/NavigationBar';
+import Plans from "./components/Plans";
 
 import { pathToRegexp } from "path-to-regexp";
 import { Router, Switch, Route, Link, useRoute } from "wouter";
@@ -203,14 +204,13 @@ function App() {
                     <Route path="/login"><Login/></Route>
                     <Route path="/signup"><SignUpChoose/></Route>
                     <Route path="/signup/:screen">{(props)=><SignUp pantalla={props.screen}/>}</Route>
-                    <Route path="/client">plans</Route>
+                    <Route path="/client"><Plans/></Route>
                     <Route path="/client/info"><CustomerInformationRecord/></Route>
                     <Route path="/client/products"><CustomerProductManagement/></Route>
                     <Route path="/nutricionist">Profile</Route>
-                    <Route path="/nutricionist/plans">Plans</Route>
+                    <Route path="/nutricionist/plans"><Plans/></Route>
                     <Route path="/nutricionist/products"><NutritionistProductManagement/></Route>
                     <Route path="/admin"><AdminProductManagement/></Route>
-
                     <Route path="/:anything">404 Página no encontrada</Route>
                 </Switch>
             </div>

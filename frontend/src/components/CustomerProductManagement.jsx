@@ -14,6 +14,7 @@ function CustomerProductManagement() {
 
     const upd = () => {
         setUpdateState(!updateState);
+        console.log('updating');
     }
 
     useEffect(()=>{

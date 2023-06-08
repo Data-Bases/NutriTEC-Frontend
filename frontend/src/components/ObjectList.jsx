@@ -8,6 +8,15 @@ function ObjectList({ objetos, setObjectFunction }) {
 
     // Estados
     const [selectedID, setSelectedID] = useState(''); // ID del objeto seleccionado
+    const [editedDescripcion, setEditedDescripcion] = useState('');
+    const [editedEnergia, setEditedEnergia] = useState('');
+    const [editedGrasa, setEditedGrasa] = useState('');
+    const [editedSodio, setEditedSodio] = useState('');
+    const [editedCarbohidratos, setEditedCarbohidratos] = useState('');
+    const [editedProteina, setEditedProteina] = useState('');
+    const [editedCalcio, setEditedCalcio] = useState('');
+    const [editedHierro, setEditedHierro] = useState('');
+    const [editedPorcion, setEditedPorcion] = useState('');
     const [isEditing, setIsEditing] = useState(false); // Valor booleano para saber si se esta editando un objeto 
     const [editedName, setEditedName] = useState(''); // Nombre del objeto editado
     const [newName, setNewName] = useState(''); // Nombre del nuevo objeto
@@ -108,17 +117,60 @@ function ObjectList({ objetos, setObjectFunction }) {
     const handleNewSubmit = (event) => { // Controlador para guardar el nuevo objeto
         event.preventDefault();
         handleShow();
-
-        // ---------- PUT ----------
-
-        // objetos.push({ // En vez de esto se puede hacer un GET (mas seguro, menos rapido)
-        //     nombre: newName,
-        //     identificador: newID
-        // });
-
-        setNewName('');
-        setNewID('');
         setIsAddDisabled(true)
+    };
+
+    const handleNewProduct = () => {
+        handleClose();
+
+        const body = {
+            name: newName,
+            description: editedDescripcion,
+            id: newID,
+            energy: editedEnergia,
+            fat: editedGrasa,
+            sodium: editedSodio,
+            carbs: editedCarbohidratos,
+            protein: editedProteina,
+            calcium: editedCalcio,
+            iron: editedHierro,
+            portionSize: editedPorcion 
+        }
+
+        console.log(body);
+
+        axios.post(
+            baseURL + `/product/AddNewProduct`, body
+          ).then(function (response) {
+          
+            setEditedDescripcion('');
+            setEditedEnergia('');
+            setEditedGrasa('');
+            setEditedSodio('');
+            setEditedCarbohidratos('');
+            setEditedProteina('');
+            setEditedCalcio('');
+            setEditedHierro('');
+            setEditedPorcion('');
+            setIsEditing('');
+            setEditedName('');
+            setNewName('');
+            setNewID('');
+          
+          }).catch(function (error) {
+            if (error.response) { // POST response with a status code not in range 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) { // no response
+              console.log(error.request);
+              // instance of XMLHttpRequest in the browser
+              // instance ofhttp.ClientRequest in node.js
+            } else { // Something wrong in setting up the request
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
+          });
     };
 
     const renderObjetos = () => {
@@ -157,24 +209,29 @@ function ObjectList({ objetos, setObjectFunction }) {
     const renderModal = () => (
         <Modal show={show} onHide={handleClose} key={"modal"} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Caracteristicas Producto</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="name@example.com"
-                autoFocus
-              />
-            </Form.Group>
-            <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlTextarea1"
-            >
-              <Form.Label>Example textarea</Form.Label>
-              <Form.Control as="textarea" rows={3} />
+                <Form.Label>Descripcion</Form.Label>
+                <Form.Control placeholder='Descripcion' value={editedDescripcion} onChange={(e) => setEditedDescripcion(e.target.value)} />
+                <Form.Label>Energia</Form.Label>
+                <Form.Control placeholder='Energia' value={editedEnergia} onChange={(e) => setEditedEnergia(e.target.value)} />
+                <Form.Label>Grasa</Form.Label>
+                <Form.Control placeholder='Grasa' value={editedGrasa} onChange={(e) => setEditedGrasa(e.target.value)} />
+                <Form.Label>Sodio</Form.Label>
+                <Form.Control placeholder='Sodio' value={editedSodio} onChange={(e) => setEditedSodio(e.target.value)} />
+                <Form.Label>Carbohidratos</Form.Label>
+                <Form.Control placeholder='Carbohidratos' value={editedCarbohidratos} onChange={(e) => setEditedCarbohidratos(e.target.value)} />
+                <Form.Label>Proteina</Form.Label>
+                <Form.Control placeholder='Proteina' value={editedProteina} onChange={(e) => setEditedProteina(e.target.value)} />
+                <Form.Label>Calcio</Form.Label>
+                <Form.Control placeholder='Calcio' value={editedCalcio} onChange={(e) => setEditedCalcio(e.target.value)} />
+                <Form.Label>Hierro</Form.Label>
+                <Form.Control placeholder='Hierro' value={editedHierro} onChange={(e) => setEditedHierro(e.target.value)} />
+                <Form.Label>Tamaño Porción</Form.Label>
+                <Form.Control placeholder='Tamaño Porción' value={editedPorcion} onChange={(e) => setEditedPorcion(e.target.value)} />
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -182,7 +239,7 @@ function ObjectList({ objetos, setObjectFunction }) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleNewProduct}>
             Save Changes
           </Button>
         </Modal.Footer>

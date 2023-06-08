@@ -27,7 +27,13 @@ function CustomerInformationRecord() {
         axios.get(baseURL + `/product/GetAllProducts`)
         .then((response) => {
             // console.log(response.data);
+
+
+
             setProductos(response.data);
+
+
+            
         }).catch(function (error) {
             if (error.response) { // GET response with a status code not in range 2xx
               console.log(error.response.data);

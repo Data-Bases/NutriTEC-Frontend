@@ -67,18 +67,6 @@ function ProductList({ productos, setProductFunction, updateProducts }) {
             },
           ).then(function (response) {
           
-            selectedProduct.identificador = editedID
-            selectedProduct.descripcion = editedDescripcion
-            selectedProduct.energia = editedEnergia
-            selectedProduct.grasa = editedGrasa
-            selectedProduct.sodio = editedSodio
-            selectedProduct.carbohidratos = editedCarbohidratos
-            selectedProduct.proteina = editedProteina
-            selectedProduct.vitaminas = editedVitaminas
-            selectedProduct.calcio = editedCalcio
-            selectedProduct.hierro = editedHierro
-
-            setSelectedProduct(selectedProduct);
             updateProducts();
           
           }).catch(function (error) {
@@ -95,8 +83,9 @@ function ProductList({ productos, setProductFunction, updateProducts }) {
             }
             console.log(error.config);
           });
+
+        updateProducts();
         
-        setEditMode(true);
         setEditMode(false);
     };
 

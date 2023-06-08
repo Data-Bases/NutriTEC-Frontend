@@ -1,0 +1,46 @@
+@import "Custom";
+
+.plans {
+    flex-flow: column;
+    width: 80vw;
+    height: 70vh;
+}
+
+.plans-header {
+    justify-content: center;
+}
+
+.plans-header input {
+    width: 150px;
+    margin-left: 15px;
+}
+
+.plans-body {
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+.plans-desayuno{
+    width: 30%;
+    justify-content: center;
+}
+
+.plans-almuerzo{
+    width: 30%;
+    border-left: 2px solid $secondary;
+    border-right: 2px solid $secondary;
+    justify-content: center;
+}
+
+.plans-cena{
+    width: 30%;
+    justify-content: center;
+}
+
+.plans-snack{
+    
+}
+
+.divider{
+    border: 2px solid $secondary;
+}
