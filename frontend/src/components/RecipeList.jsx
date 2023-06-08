@@ -1,51 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import ObjectList from './ObjectList';
-import ProductInfo from './ProductInfo';
+import RecipeInfo from './RecipeInfo';
 
-function ProductList({ products, setProducts }) {
-    const [selectedProduct, setSelectedProduct] = useState(products[0]);
-    const [isProductAdded, setIsProductAdded] = useState(false);
+function RecipeList({ recetas, setRecipeFunction, setRecipes }) {
+    const [selectedRecipe, setSelectedRecipe] = useState(recetas[0]);
+
+    const [isRecipeAdded, setIsRecipeAdded] = useState(false);
     const [addedProductName, setAddedProductName] = useState('');
 
-    // UseEffect
-    useEffect(() => {
-        if (products != null) {
-            setSelectedProduct(products[0]);
-        }
-        else {
-            setSelectedProduct(null);
-        }
-    }, [products]);
-    //
+    const handleSelectedRecipe = (receta) => {
+        setSelectedRecipe(receta)
+        if (setRecipeFunction != null) setRecipeFunction(receta)
 
-    // Funciones
-    const handleSelectedProduct = (p) => {
-        setSelectedProduct(p)
-        setIsProductAdded(false);
+        setIsRecipeAdded(false);
     };
 
     const handleButtonDelete = () => {
-        if (selectedProduct != null) {
+        if (selectedRecipe != null) {
 
             // Remplazar por un cambio en la base de datos (delete)
-            const updatedProducts = products.filter((p) => p.identificador !== selectedProduct.identificador);
+            const updatedRecipes = recetas.filter((r) => r.identificador !== selectedRecipe.identificador);
             //
 
-            setProducts(updatedProducts);
-            setIsProductAdded(false);
+            setRecipes(updatedRecipes);
+            setIsRecipeAdded(false);
         }
     };
 
     const handleButtonAdd = () => {
-        setIsProductAdded(true);
+        setIsRecipeAdded(true);
     };
 
     const handleButtonSaveAdd = () => {
 
         // Remplazar por un cambio en la base de datos (post)
-        const newProduct = {
+        const newRecipe = {
             identificador: 'X',
             nombre: addedProductName,
             gramos: '0',
@@ -55,25 +47,27 @@ function ProductList({ products, setProducts }) {
             carbohidratos: '0',
             proteina: '0',
             calcio: '0',
-            hierro: '0'
+            hierro: '0',
+            productos: []
         };
-        const updatedProducts = [...products, newProduct];
+
+        const updatedProducts = [...recetas, newRecipe];
         //
 
-        setProducts(updatedProducts);
+        setRecipes(updatedProducts);
         setAddedProductName('');
-        setIsProductAdded(false);
+        setIsRecipeAdded(false);
     };
-    //
 
-    // Return
+
     return (
         <div className="d-flex" style={{ justifyContent: 'center' }}>
+
             <div className="d-flex" style={{ flexDirection: 'column' }}>
-                <ObjectList objects={products} setObjectFunction={handleSelectedProduct} />
-                {isProductAdded ?
+                <ObjectList objects={recetas} setObjectFunction={handleSelectedRecipe} />
+                {isRecipeAdded ?
                     <div className="d-flex" style={{ marginTop: '10px' }}>
-                        <Form.Control placeholder='Nombre del producto' style={{ width: '100%', marginRight: '10px' }} value={addedProductName} onChange={(e) => setAddedProductName(e.target.value)} />
+                        <Form.Control placeholder='Nombre de la receta' style={{ width: '100%', marginRight: '10px' }} value={addedProductName} onChange={(e) => setAddedProductName(e.target.value)} />
                         <Button onClick={handleButtonSaveAdd}> ✓ </Button>
                     </div>
                     :
@@ -84,10 +78,10 @@ function ProductList({ products, setProducts }) {
             </div>
 
             <div className="d-flex" style={{ flexDirection: 'column', marginLeft: '50px' }}>
-                <ProductInfo product={selectedProduct} setProducts={setProducts}></ProductInfo>
+                <RecipeInfo receta={selectedRecipe} setRecipes={setRecipes}></RecipeInfo>
             </div>
         </div >
     );
 }
 
-export default ProductList;
+export default RecipeList;
