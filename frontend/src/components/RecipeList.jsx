@@ -1,34 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import ObjectList from './ObjectList';
 import RecipeInfo from './RecipeInfo';
 
-function RecipeList({ recetas, setRecipeFunction }) {
+function RecipeList({ recetas, setRecipeFunction, setRecipes }) {
     const [selectedRecipe, setSelectedRecipe] = useState(recetas[0]);
 
     const [isRecipeAdded, setIsRecipeAdded] = useState(false);
     const [addedProductName, setAddedProductName] = useState('');
 
-
     const handleSelectedRecipe = (receta) => {
         setSelectedRecipe(receta)
-        // console.log(receta);
         if (setRecipeFunction != null) setRecipeFunction(receta)
 
         setIsRecipeAdded(false);
     };
 
     const handleButtonDelete = () => {
+        if (selectedRecipe != null) {
 
-        // Remplazar por un cambio en la base de datos
-        const index = recetas.findIndex((r) => r.identificador === selectedRecipe.identificador);
-        recetas.splice(index, 1);
-        //
+            // Remplazar por un cambio en la base de datos
+            const updatedRecipes = recetas.filter((r) => r.identificador !== selectedRecipe.identificador);
+            //
 
-        setSelectedRecipe(recetas[0])
-        setIsRecipeAdded(false);
+            setRecipes(updatedRecipes);
+            setIsRecipeAdded(false);
+        }
     };
 
     const handleButtonAdd = () => {
@@ -38,8 +37,8 @@ function RecipeList({ recetas, setRecipeFunction }) {
     const handleButtonSaveAdd = () => {
 
         // Remplazar por un cambio en la base de datos
-        recetas.push({
-            identificador: 'Y',
+        const newRecipe = {
+            identificador: 'X',
             nombre: addedProductName,
             gramos: '0',
             energia: '0',
@@ -50,11 +49,13 @@ function RecipeList({ recetas, setRecipeFunction }) {
             calcio: '0',
             hierro: '0',
             productos: []
-        });
+        };
+
+        const updatedProducts = [...recetas, newRecipe];
         //
 
+        setRecipes(updatedProducts);
         setAddedProductName('');
-
         setIsRecipeAdded(false);
     };
 
@@ -63,7 +64,7 @@ function RecipeList({ recetas, setRecipeFunction }) {
         <div className="d-flex" style={{ justifyContent: 'center' }}>
 
             <div className="d-flex" style={{ flexDirection: 'column' }}>
-                <ObjectList objetos={recetas} setObjectFunction={handleSelectedRecipe} />
+                <ObjectList objects={recetas} setObjectFunction={handleSelectedRecipe} />
                 {isRecipeAdded ?
                     <div className="d-flex" style={{ marginTop: '10px' }}>
                         <Form.Control placeholder='Nombre de la receta' style={{ width: '100%', marginRight: '10px' }} value={addedProductName} onChange={(e) => setAddedProductName(e.target.value)} />

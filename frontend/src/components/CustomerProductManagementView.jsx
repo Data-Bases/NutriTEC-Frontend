@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Button } from 'react-bootstrap';
 
 import ProductList from './ProductList';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function CustomerProductManagementView({ productos }) {
+function CustomerProductManagementView({products, setProducts}) {
+    
     return (
         <Container className='d-flex' style={{ justifyContent: 'center', backgroundColor: 'lightgray', borderRadius: '10px', padding: '20px' }} >
 
-            <ProductList productos={productos}></ProductList>
-            
+            <ProductList products={products} setProducts={setProducts}></ProductList>
+
         </Container>
     );
 }

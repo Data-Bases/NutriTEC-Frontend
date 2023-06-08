@@ -8,9 +8,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import RecipeProductList from './RecipeProductList';
 
-function CustomerInformationRecordView({ alimentos }) {
+function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
     const [selectedFood, setSelectedFood] = useState('Desayuno');
-    const [selectedMeals, setSelectedMeals] = useState([]);
+    const [newRecipe, setNewRecipe] = useState({identificador:'X', productos: []});
     const [selectedDate, setSelectedDate] = useState(new Date());
     
 
@@ -69,7 +69,7 @@ function CustomerInformationRecordView({ alimentos }) {
                         <Dropdown.Item eventKey="Cena"> Merienda </Dropdown.Item>
                     </DropdownButton>
 
-                    <RecipeProductList productos={alimentos} productosReceta={selectedMeals} ></RecipeProductList>
+                    <RecipeProductList productos={[...productos, ...recetas]} recipe={newRecipe} setRecipes={setRecipes}></RecipeProductList>
 
                 </div>
 

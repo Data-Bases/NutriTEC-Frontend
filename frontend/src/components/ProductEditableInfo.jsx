@@ -1,35 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from 'react-bootstrap';
 
 import FoodAtributes from './FoodAtributes';
 
-function ProductEditableInfo({ producto, isInfoEditableFunction }) {
+function ProductEditableInfo({ product, isInfoEditableFunction, setProducts }) {
 
-    const [editedName, setEditedName] = useState(producto.nombre);
-    const [editedGramos, setEditedGramos] = useState(producto.gramos);
-    const [editedEnergia, setEditedEnergia] = useState(producto.energia);
-    const [editedGrasa, setEditedGrasa] = useState(producto.grasa);
-    const [editedSodio, setEditedSodio] = useState(producto.sodio);
-    const [editedCarbohidratos, setEditedCarbohidratos] = useState(producto.carbohidratos);
-    const [editedProteina, setEditedProteina] = useState(producto.proteina);
-    const [editedCalcio, setEditedCalcio] = useState(producto.calcio);
-    const [editedHierro, setEditedHierro] = useState(producto.hierro);
+    const [editedName, setEditedName] = useState(product.nombre);
+    const [editedGramos, setEditedGramos] = useState(product.gramos);
+    const [editedEnergia, setEditedEnergia] = useState(product.energia);
+    const [editedGrasa, setEditedGrasa] = useState(product.grasa);
+    const [editedSodio, setEditedSodio] = useState(product.sodio);
+    const [editedCarbohidratos, setEditedCarbohidratos] = useState(product.carbohidratos);
+    const [editedProteina, setEditedProteina] = useState(product.proteina);
+    const [editedCalcio, setEditedCalcio] = useState(product.calcio);
+    const [editedHierro, setEditedHierro] = useState(product.hierro);
 
     const handleSaveButton = () => {
-
         // Remplazar por un cambio en la base de datos
-        producto.nombre = editedName;
-        producto.gramos = editedGramos;
-        producto.energia = editedEnergia;
-        producto.grasa = editedGrasa;
-        producto.sodio = editedSodio;
-        producto.carbohidratos = editedCarbohidratos;
-        producto.proteina = editedProteina;
-        producto.calcio = editedCalcio;
-        producto.hierro = editedHierro;
+        product.nombre = editedName;
+        product.gramos = editedGramos;
+        product.energia = editedEnergia;
+        product.grasa = editedGrasa;
+        product.sodio = editedSodio;
+        product.carbohidratos = editedCarbohidratos;
+        product.proteina = editedProteina;
+        product.calcio = editedCalcio;
+        product.hierro = editedHierro;
         //
 
+        // setProducts(?);
         isInfoEditableFunction(false);
 
     };

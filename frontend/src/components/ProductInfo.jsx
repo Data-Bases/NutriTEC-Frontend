@@ -6,11 +6,11 @@ import FoodInfo from './FoodInfo';
 import ProductEditableInfo from './ProductEditableInfo';
 
 
-function ProductInfo({ producto }) {
+function ProductInfo({ product, setProducts }) {
     const [isInfoEditable, SetisInfoEditable] = useState(false);
 
-    const handleIsInfoEditable = (value) => {
-        SetisInfoEditable(value);
+    const handleIsInfoEditable = (v) => {
+        SetisInfoEditable(v);
     }
 
     const handleEditButton = () => {
@@ -21,13 +21,13 @@ function ProductInfo({ producto }) {
         <div>
             <h2> Informacion del producto </h2>
 
-            {(producto != null) ?
+            {(product != null) ?
                 <>
                     {isInfoEditable ?
-                        <ProductEditableInfo producto={producto} isInfoEditableFunction={handleIsInfoEditable}></ProductEditableInfo>
+                        <ProductEditableInfo product={product} isInfoEditableFunction={handleIsInfoEditable} setProducts={setProducts}></ProductEditableInfo>
                         :
                         <>
-                            <FoodInfo alimento={producto}></FoodInfo>
+                            <FoodInfo alimento={product}></FoodInfo>
                             <Button onClick={handleEditButton} style={{ width: '100%', marginTop: '10px' }}> ✎ </Button>
                         </>}
                 </>

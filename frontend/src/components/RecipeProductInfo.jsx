@@ -31,7 +31,7 @@ function RecipeProductInfo({ producto }) {
                             <Button onClick={handleEditButton} style={{ width: '100%', marginTop: '10px' }}> ✎ </Button>
                         </>}
                 </>
-                : <p> Eliga un alimento </p>}
+                : <p> No hay alimentos </p>}
         </div>
     );
 }

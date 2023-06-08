@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function ObjectList({ objetos, setObjectFunction }) {
+function ObjectList({ objects, setObjectFunction }) {
 
     // Estados
-    const [selectedObject, setSelectedObject] = useState(null);
-    const [selectedObjectID, setSelectedObjectID] = useState('');
+    const [selectedObject, setSelectedObject] = useState(objects[0]);
 
+    useEffect(() => {
+        if(selectedObject == null){
+            setSelectedObject(objects[0]);
+        }
+    }, [objects]);
 
     // Funciones
     const handleClick = (objeto) => {
         setSelectedObject(objeto);
-        setSelectedObjectID(objeto.identificador);
         if (setObjectFunction != null) setObjectFunction(objeto);
-
     };
 
     // Return
@@ -28,18 +30,18 @@ function ObjectList({ objetos, setObjectFunction }) {
                 border: '1px solid black',
             }}
         >
-            {(objetos != null) &&
+            {(selectedObject != null) &&
                 <div style={{ overflowY: 'auto', maxHeight: '450px' }}>
 
-                    {objetos.map((objeto) => (
+                    {objects.map((object) => (
                         <Button
                             className="mb-2"
-                            key={objeto.identificador}
+                            key={object.identificador}
                             style={{ width: '100%' }}
-                            variant={selectedObjectID === objeto.identificador ? 'primary' : 'light'}
-                            onClick={() => handleClick(objeto)}
+                            variant={selectedObject.identificador === object.identificador ? 'primary' : 'light'}
+                            onClick={() => handleClick(object)}
                         >
-                            {objeto.nombre}
+                            {object.nombre}
                         </Button>
                     ))}
                 </div>

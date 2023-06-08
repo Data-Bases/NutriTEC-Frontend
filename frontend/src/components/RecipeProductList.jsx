@@ -1,67 +1,99 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import ObjectList from './ObjectList';
 import RecipeProductInfo from './RecipeProductInfo';
 
-function RecipeProductList({ productos, productosReceta}) {
+function RecipeProductList({ productos, recetas, recipe, setRecipeFunction, setRecipes }) {
+
     const [selectedProduct, setSelectedProduct] = useState(productos[0]);
     const [selectedRecipeProduct, setSelectedRecipeProduct] = useState(null);
-    const [isRecipeProductAdded, SetIsRecipeProductAdded] = useState(false);
+    const [recipeProducts, setRecipeProducts] = useState(recipe.productos);
+    const [isRecipeProductAdded, setIsRecipeProductAdded] = useState(false);
     const [gramos, setGramos] = useState('');
 
-    const handleSelectedRecipeProduct = (producto) => {
-        setSelectedRecipeProduct(producto);
-        SetIsRecipeProductAdded(false);
+    useEffect(() => {
+        if (recipe != null && recipe.productos != null && recipe.productos.length !== 0) {
+            setRecipeProducts(recipe.productos);
+            setSelectedProduct(productos[0]);
+            setSelectedRecipeProduct(recipe.productos[0]);
+        } else {
+            setRecipeProducts([]);
+        }
+    }, [recipe]);
+
+    const handleSelectedRecipeProduct = (p) => {
+        setSelectedRecipeProduct(p);
+        setIsRecipeProductAdded(false);
     };
 
     const handleButtonDelete = () => {
-
-         // Remplazar por un cambio en la base de datos
-         const index = productosReceta.findIndex((p) => p.identificador === selectedRecipeProduct.identificador);
-         productosReceta.splice(index, 1);
-         //
- 
-         setSelectedRecipeProduct(productosReceta[0])
-         SetIsRecipeProductAdded(false);
-
-        // // Crear una nueva copia del arreglo de productos de receta sin el producto seleccionado
-        // const updatedRecipeProducts = recipeProducts.filter(
-        //     (r) => r.identificador !== selectedRecipeProduct.identificador
-        // );
-
-        // setRecipeProducts(updatedRecipeProducts);
-        // setSelectedRecipeProduct(null);
-        
+        if (selectedRecipeProduct != null) {
+            if (recetas != null) {
+                // Reemplazar por un cambio en la base de datos
+                const updatedRecipes = recetas.map((receta) => {
+                    if (receta.identificador === recipe.identificador) {
+                        const updatedRecipeProduct = receta.productos.filter(
+                            (producto) => producto.identificador !== selectedRecipeProduct.identificador
+                        );
+                        return { ...receta, productos: updatedRecipeProduct };
+                    }
+                    return receta;
+                });
+                setRecipes(updatedRecipes);
+                setRecipeProducts(
+                    updatedRecipes.find((receta) => receta.identificador === recipe.identificador)?.productos || []
+                );
+            } else {
+                const updatedProducts = recipeProducts.filter(
+                    (producto) => producto.identificador !== selectedRecipeProduct.identificador
+                );
+                setRecipeProducts(updatedProducts);
+                if (setRecipeFunction != null) setRecipeFunction(recipe);
+            }
+            setIsRecipeProductAdded(false);
+        }
     };
 
     const handleButtonAdd = () => {
-        SetIsRecipeProductAdded(true);
+        setIsRecipeProductAdded(true);
     };
 
     const handleButtonSaveAdd = () => {
-        
-        // Remplazar por un cambio en la base de datos
-        const newProduct = {...selectedProduct}
+        // Reemplazar por un cambio en la base de datos
+        const newProduct = { ...selectedProduct };
         newProduct.identificador = 'Z';
         newProduct.gramos = gramos;
-        productosReceta.push(newProduct);
-        //
+
+        if (recetas != null) {
+            const updatedRecipes = recetas.map((receta) => {
+                if (receta.identificador === recipe.identificador) {
+                    const recipeProducts = [...receta.productos, newProduct];
+                    return { ...receta, productos: recipeProducts };
+                }
+                return receta;
+            });
+            setRecipes(updatedRecipes);
+            setRecipeProducts(updatedRecipes.find((receta) => receta.identificador === recipe.identificador)?.productos || []);
+        } else {
+            const updatedProducts = [...recipeProducts, newProduct];
+            // console.log(updatedProducts);
+            setRecipeProducts(updatedProducts);
+            if (setRecipeFunction != null) setRecipeFunction(recipe);
+        }
 
         setGramos('');
-        SetIsRecipeProductAdded(false);  
+        setIsRecipeProductAdded(false);
     };
 
     return (
-
         <div className="d-flex" style={{ justifyContent: 'center' }}>
             <div className="d-flex" style={{ flexDirection: 'column' }}>
-                <ObjectList objetos={productosReceta} setObjectFunction={handleSelectedRecipeProduct} />
+                <ObjectList objects={recipeProducts} setObjectFunction={handleSelectedRecipeProduct} />
 
-                {isRecipeProductAdded ?
+                {isRecipeProductAdded ? (
                     <div className="d-flex" style={{ marginTop: '10px' }}>
-
                         <DropdownButton style={{ marginRight: '10px' }} id="product-dropdown" title={selectedProduct.nombre}>
                             {productos.map((producto, index) => (
                                 <Dropdown.Item key={index} onClick={() => setSelectedProduct(producto)}>
@@ -76,13 +108,23 @@ function RecipeProductList({ productos, productosReceta}) {
                             value={gramos}
                             onChange={(e) => setGramos(e.target.value)}
                         />
-                        <Button style={{ width: '100%' }} onClick={handleButtonSaveAdd}> ✓ </Button>
+                        <Button style={{ width: '100%' }} onClick={handleButtonSaveAdd}>
+                            {' '}
+                            ✓{' '}
+                        </Button>
                     </div>
-                    :
+                ) : (
                     <div className="d-flex" style={{ marginTop: '10px' }}>
-                        <Button onClick={handleButtonDelete} style={{ width: '100%', marginRight: '10px' }}> 🗑️ </Button>
-                        <Button onClick={handleButtonAdd} style={{ width: '100%' }}> + </Button>
-                    </div>}
+                        <Button onClick={handleButtonDelete} style={{ width: '100%', marginRight: '10px' }}>
+                            {' '}
+                            🗑️{' '}
+                        </Button>
+                        <Button onClick={handleButtonAdd} style={{ width: '100%' }}>
+                            {' '}
+                            +{' '}
+                        </Button>
+                    </div>
+                )}
             </div>
 
             <div className="d-flex" style={{ flexDirection: 'column', marginLeft: '50px' }}>

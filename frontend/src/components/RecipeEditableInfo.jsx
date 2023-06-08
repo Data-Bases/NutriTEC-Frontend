@@ -8,6 +8,14 @@ function RecipeEditableInfo({ receta, isInfoEditableFunction }) {
 
     const [editedName, setEditedName] = useState(receta.nombre);
 
+    // // UseEffect
+    // useEffect(() => {
+    //     if (receta != null) {
+    //         setEditedName(receta.nombre);
+    //     }
+    // }, [receta]);
+    // //
+
     const handleSaveButton = () => {
 
         // Remplazar por un cambio en la base de datos

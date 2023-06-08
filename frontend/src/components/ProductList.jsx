@@ -1,34 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import ObjectList from './ObjectList';
 import ProductInfo from './ProductInfo';
 
-function ProductList({ productos, setProductFunction }) {
-    const [selectedProduct, setSelectedProduct] = useState(productos[0]);
+function ProductList({ products, setProducts }) {
+    const [selectedProduct, setSelectedProduct] = useState(products[0]);
     const [isProductAdded, setIsProductAdded] = useState(false);
     const [addedProductName, setAddedProductName] = useState('');
 
-    const [products, setProducts] = useState(productos);
+    // UseEffect
+    useEffect(() => {
+        if (products != null) {
+            setSelectedProduct(products[0]);
+        }
+        else {
+            setSelectedProduct(null);
+        }
+    }, [products]);
+    //
 
-    const handleSelectedProduct = (producto) => {
-        setSelectedProduct(producto)
-        if (setProductFunction != null) setProductFunction(producto)
-
+    // Funciones
+    const handleSelectedProduct = (p) => {
+        setSelectedProduct(p)
         setIsProductAdded(false);
     };
 
     const handleButtonDelete = () => {
+        if (selectedProduct != null) {
 
-        // Remplazar por un cambio en la base de datos
-        const index = productos.findIndex((r) => r.identificador === selectedProduct.identificador);
-        productos.splice(index, 1);
-        const updatedProductos = [...productos];
-        //
+            // Remplazar por un cambio en la base de datos
+            const updatedProducts = products.filter((p) => p.identificador !== selectedProduct.identificador);
+            //
 
-        setProducts(updatedProductos);
-        setIsProductAdded(false);
+            setProducts(updatedProducts);
+            setIsProductAdded(false);
+        }
     };
 
     const handleButtonAdd = () => {
@@ -38,7 +46,7 @@ function ProductList({ productos, setProductFunction }) {
     const handleButtonSaveAdd = () => {
 
         // Remplazar por un cambio en la base de datos
-        productos.push({
+        const newProduct = {
             identificador: 'X',
             nombre: addedProductName,
             gramos: '0',
@@ -47,22 +55,23 @@ function ProductList({ productos, setProductFunction }) {
             sodio: '0',
             carbohidratos: '0',
             proteina: '0',
-            vitaminas: '0',
             calcio: '0',
             hierro: '0'
-        });
-        const updatedProductos = [...productos];
+        };
+        const updatedProducts = [...products, newProduct];
         //
 
-        setProducts(updatedProductos);
+        setProducts(updatedProducts);
         setAddedProductName('');
         setIsProductAdded(false);
     };
+    //
 
+    // Return
     return (
-        <div className="d-flex" style={{ justifyContent:'center' }}>
-            <div className="d-flex" style={{ flexDirection: 'column'}}>
-                <ObjectList objetos={products} setObjectFunction={handleSelectedProduct} />
+        <div className="d-flex" style={{ justifyContent: 'center' }}>
+            <div className="d-flex" style={{ flexDirection: 'column' }}>
+                <ObjectList objects={products} setObjectFunction={handleSelectedProduct} />
                 {isProductAdded ?
                     <div className="d-flex" style={{ marginTop: '10px' }}>
                         <Form.Control placeholder='Nombre del producto' style={{ width: '100%', marginRight: '10px' }} value={addedProductName} onChange={(e) => setAddedProductName(e.target.value)} />
@@ -75,8 +84,8 @@ function ProductList({ productos, setProductFunction }) {
                     </div>}
             </div>
 
-            <div className="d-flex" style={{ flexDirection: 'column', marginLeft:'50px'}}>
-                <ProductInfo producto={selectedProduct}></ProductInfo>
+            <div className="d-flex" style={{ flexDirection: 'column', marginLeft: '50px' }}>
+                <ProductInfo product={selectedProduct}></ProductInfo>
             </div>
         </div >
     );
