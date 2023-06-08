@@ -4,15 +4,24 @@ import { Form, Button } from 'react-bootstrap';
 
 import FoodAtributes from './FoodAtributes';
 
-function RecipeProductEditableInfo({ producto, isInfoEditableFunction }) {
+function RecipeProductEditableInfo({ producto, receta, isInfoEditableFunction, setRecipes }) {
 
     const [editedGramos, setEditedGramos] = useState(producto.gramos);
 
     const handleSaveButton = () => {
 
-        // Remplazar por un cambio en la base de datos
-        producto.gramos = editedGramos;
+        // Remplazar por un cambio en la base de datos (put)
+        if(receta.identificador != null){
+            producto.gramos = editedGramos;
+        }
         //
+        //setRecipes() hay que actualizar las recetas despues de lo de arriba
+
+        else{
+            const index = receta.productos.findIndex((r) => r.identificador === producto.identificador);
+            receta.productos[index].gramos = editedGramos
+        }
+    
 
         isInfoEditableFunction(false);
 

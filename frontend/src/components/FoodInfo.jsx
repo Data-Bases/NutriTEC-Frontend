@@ -6,6 +6,8 @@ import FoodAtributes from './FoodAtributes';
 
 function FoodInfo({ alimento }) {
 
+    // Se debe pedir a la base la info del alimento, puede ser producto o receta
+
     return (
         <div className="d-flex" style={{ justifyContent: 'space-between' }}>
             <FoodAtributes></FoodAtributes>

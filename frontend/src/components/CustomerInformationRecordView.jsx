@@ -10,7 +10,7 @@ import RecipeProductList from './RecipeProductList';
 
 function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
     const [selectedFood, setSelectedFood] = useState('Desayuno');
-    const [newRecipe, setNewRecipe] = useState({identificador:'X', productos: []});
+    const [foodEated, setFoodEated] = useState({identificador: null, productos: []});
     const [selectedDate, setSelectedDate] = useState(new Date());
     
 
@@ -25,8 +25,9 @@ function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
     }
 
     const handleButtonRegistrarComida = () => {
+        // Hace un post de esto
         console.log(selectedFood);
-        console.log(selectedMeals);
+        console.log(foodEated);
 
     }
 
@@ -37,6 +38,7 @@ function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
         setMusculo('');
         setGrasa('');
 
+        // Hace un post de esto
         console.log(cuello);
         console.log(cintura);
         console.log(cadera);
@@ -48,12 +50,11 @@ function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
         setSelectedDate(date);
         console.log(date);
 
-        //Hacer consulta de Meals en esa fecha
-
         console.log(date.toLocaleDateString());
     };
 
     const handleButtonGenerarReporte = () => {
+        // Hace un get? de esto
         console.log("se genera reporte");
 
     }
@@ -69,7 +70,7 @@ function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
                         <Dropdown.Item eventKey="Cena"> Merienda </Dropdown.Item>
                     </DropdownButton>
 
-                    <RecipeProductList productos={[...productos, ...recetas]} recipe={newRecipe} setRecipes={setRecipes}></RecipeProductList>
+                    <RecipeProductList productos={[...productos, ...recetas]} receta={foodEated} setRecipes={setRecipes}></RecipeProductList>
 
                 </div>
 

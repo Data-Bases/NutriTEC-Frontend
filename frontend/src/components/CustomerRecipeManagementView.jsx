@@ -10,7 +10,6 @@ function CustomerRecipeManagementView({ productos, recetas, setProducts, setReci
     const [selectedRecipe, setSelectedRecipe] = useState(recetas[0]);
 
     const handleSelectedRecipe = (r) => {
-        console.log(r);
         setSelectedRecipe(r);
     }
 
@@ -21,7 +20,7 @@ function CustomerRecipeManagementView({ productos, recetas, setProducts, setReci
 
             <h2 className='d-flex' style={{ justifyContent: 'center', alignItems: 'center', margin:'0 25px'}}> → </h2>
 
-            <RecipeProductList productos={productos} recetas={recetas} recipe={selectedRecipe} setRecipes={setRecipes} ></RecipeProductList>
+            <RecipeProductList productos={productos} recetas={recetas} receta={selectedRecipe} setRecipes={setRecipes} ></RecipeProductList>
 
         </Container>
     );

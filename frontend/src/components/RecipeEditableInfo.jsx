@@ -4,23 +4,17 @@ import { Form, Button } from 'react-bootstrap';
 
 import FoodAtributes from './FoodAtributes';
 
-function RecipeEditableInfo({ receta, isInfoEditableFunction }) {
+function RecipeEditableInfo({ receta, isInfoEditableFunction, setRecipes }) {
 
     const [editedName, setEditedName] = useState(receta.nombre);
 
-    // // UseEffect
-    // useEffect(() => {
-    //     if (receta != null) {
-    //         setEditedName(receta.nombre);
-    //     }
-    // }, [receta]);
-    // //
-
     const handleSaveButton = () => {
 
-        // Remplazar por un cambio en la base de datos
+        // Remplazar por un cambio en la base de datos (put)
         receta.nombre = editedName;
         //
+
+        //setRecipes() hay que actualizar las recetas despues de lo de arriba
 
         isInfoEditableFunction(false);
 

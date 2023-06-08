@@ -5,6 +5,10 @@ import CustomerInformationRecordView from './CustomerInformationRecordView';
 import CustomerProductManagementView from './CustomerProductManagementView';
 import CustomerRecipeManagementView from './CustomerRecipeManagementView';
 
+import NutricionistProductManagementView from './NutricionistProductManagementView';
+
+import AdminProductManagementView from './AdminProductManagementView';
+
 function SuperiorComponent() {
     // Esto debe tenerlo un componente superior
     const [products, setProducts] = useState([]);
@@ -15,39 +19,15 @@ function SuperiorComponent() {
         const dBProducts = [
             {
                 identificador: '1',
-                nombre: 'producto 1',
-                gramos: '###',
-                energia: '###',
-                grasa: '###',
-                sodio: '###',
-                carbohidratos: '###',
-                proteina: '###',
-                calcio: '###X',
-                hierro: '###X'
+                nombre: 'producto 1'
             },
             {
                 identificador: '2',
-                nombre: 'producto 2',
-                gramos: '###',
-                energia: '###',
-                grasa: '###',
-                sodio: '###',
-                carbohidratos: '###',
-                proteina: '###',
-                calcio: '###X',
-                hierro: '###X'
+                nombre: 'producto 2'
             },
             {
                 identificador: '3',
-                nombre: 'producto 3',
-                gramos: '###',
-                energia: '###',
-                grasa: '###',
-                sodio: '###',
-                carbohidratos: '###',
-                proteina: '###',
-                calcio: '###X',
-                hierro: '###X'
+                nombre: 'producto 3'
             }
         ];
 
@@ -61,8 +41,8 @@ function SuperiorComponent() {
                 sodio: '###',
                 carbohidratos: '###',
                 proteina: '###',
-                calcio: '###X',
-                hierro: '###X',
+                calcio: '###',
+                hierro: '###',
                 productos: [{
                     identificador: '1',
                     nombre: 'producto 1',
@@ -72,8 +52,8 @@ function SuperiorComponent() {
                     sodio: '###',
                     carbohidratos: '###',
                     proteina: '###',
-                    calcio: '###X',
-                    hierro: '###X'
+                    calcio: '###',
+                    hierro: '###'
                 },
                 {
                     identificador: '2',
@@ -84,8 +64,8 @@ function SuperiorComponent() {
                     sodio: '###',
                     carbohidratos: '###',
                     proteina: '###',
-                    calcio: '###X',
-                    hierro: '###X'
+                    calcio: '###',
+                    hierro: '###'
                 }]
             },
             {
@@ -97,8 +77,8 @@ function SuperiorComponent() {
                 sodio: '###',
                 carbohidratos: '###',
                 proteina: '###',
-                calcio: '###X',
-                hierro: '###X',
+                calcio: '###',
+                hierro: '###',
                 productos: [{
                     identificador: '2',
                     nombre: 'producto 2',
@@ -108,8 +88,8 @@ function SuperiorComponent() {
                     sodio: '###',
                     carbohidratos: '###',
                     proteina: '###',
-                    calcio: '###X',
-                    hierro: '###X'
+                    calcio: '###',
+                    hierro: '###'
                 },
                 {
                     identificador: '3',
@@ -120,8 +100,8 @@ function SuperiorComponent() {
                     sodio: '###',
                     carbohidratos: '###',
                     proteina: '###',
-                    calcio: '###X',
-                    hierro: '###X'
+                    calcio: '###',
+                    hierro: '###'
                 }]
             },
             {
@@ -133,8 +113,8 @@ function SuperiorComponent() {
                 sodio: '###',
                 carbohidratos: '###',
                 proteina: '###',
-                calcio: '###X',
-                hierro: '###X',
+                calcio: '###',
+                hierro: '###',
                 productos: [{
                     identificador: '1',
                     nombre: 'producto 1',
@@ -144,8 +124,8 @@ function SuperiorComponent() {
                     sodio: '###',
                     carbohidratos: '###',
                     proteina: '###',
-                    calcio: '###X',
-                    hierro: '###X'
+                    calcio: '###',
+                    hierro: '###'
                 },
                 {
                     identificador: '3',
@@ -156,8 +136,8 @@ function SuperiorComponent() {
                     sodio: '###',
                     carbohidratos: '###',
                     proteina: '###',
-                    calcio: '###X',
-                    hierro: '###X'
+                    calcio: '###',
+                    hierro: '###'
                 }]
             }
         ];
@@ -179,9 +159,13 @@ function SuperiorComponent() {
     return (
         <>
             {(recipes.length != 0 && products.length != 0 ) && <>
-                {/* <CustomerInformationRecordView productos={products} recetas={recipes} setRecipes={handleSetRecipes}></CustomerInformationRecordView> */}
-                <CustomerProductManagementView products={products} setProducts={handleSetProducts}></CustomerProductManagementView>
+                <CustomerInformationRecordView productos={products} recetas={recipes} setRecipes={handleSetRecipes}></CustomerInformationRecordView>
+                {/* <CustomerProductManagementView products={products} setProducts={handleSetProducts}></CustomerProductManagementView> */}
                 {/* <CustomerRecipeManagementView productos={products} recetas={recipes} setRecipes={handleSetRecipes}></CustomerRecipeManagementView> */}
+
+                {/* <NutricionistProductManagementView products={products} setProducts={handleSetProducts}></NutricionistProductManagementView> */}
+
+                {/* <AdminProductManagementView products={products} setProducts={handleSetProducts}></AdminProductManagementView> */}
             
             </>}
 

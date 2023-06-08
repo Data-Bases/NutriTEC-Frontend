@@ -6,6 +6,8 @@ import FoodAtributes from './FoodAtributes';
 
 function ProductEditableInfo({ product, isInfoEditableFunction, setProducts }) {
 
+    // Se debe importar la info del producto en la base de datos
+
     const [editedName, setEditedName] = useState(product.nombre);
     const [editedGramos, setEditedGramos] = useState(product.gramos);
     const [editedEnergia, setEditedEnergia] = useState(product.energia);
@@ -17,7 +19,7 @@ function ProductEditableInfo({ product, isInfoEditableFunction, setProducts }) {
     const [editedHierro, setEditedHierro] = useState(product.hierro);
 
     const handleSaveButton = () => {
-        // Remplazar por un cambio en la base de datos
+        // Remplazar por un cambio en la base de datos (put)
         product.nombre = editedName;
         product.gramos = editedGramos;
         product.energia = editedEnergia;
@@ -29,7 +31,8 @@ function ProductEditableInfo({ product, isInfoEditableFunction, setProducts }) {
         product.hierro = editedHierro;
         //
 
-        // setProducts(?);
+        //setProducts() hay que actualizar los productos despues de lo de arriba
+
         isInfoEditableFunction(false);
 
     };

@@ -5,53 +5,56 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ObjectList from './ObjectList';
 import RecipeProductInfo from './RecipeProductInfo';
 
-function RecipeProductList({ productos, recetas, recipe, setRecipeFunction, setRecipes }) {
+function RecipeProductList({ productos, recetas, receta, setRecipes }) {
 
     const [selectedProduct, setSelectedProduct] = useState(productos[0]);
     const [selectedRecipeProduct, setSelectedRecipeProduct] = useState(null);
-    const [recipeProducts, setRecipeProducts] = useState(recipe.productos);
+    const [recipeProducts, setRecipeProducts] = useState(receta.productos);
     const [isRecipeProductAdded, setIsRecipeProductAdded] = useState(false);
     const [gramos, setGramos] = useState('');
 
     useEffect(() => {
-        if (recipe != null && recipe.productos != null && recipe.productos.length !== 0) {
-            setRecipeProducts(recipe.productos);
+        if (receta != null && receta.productos != null && receta.productos.length !== 0) {
+            setRecipeProducts(receta.productos);
             setSelectedProduct(productos[0]);
-            setSelectedRecipeProduct(recipe.productos[0]);
+            setSelectedRecipeProduct(receta.productos[0]);
         } else {
             setRecipeProducts([]);
         }
-    }, [recipe]);
+    }, [receta]);
 
-    const handleSelectedRecipeProduct = (p) => {
+    const handleselectedRecipeProduct = (p) => {
         setSelectedRecipeProduct(p);
         setIsRecipeProductAdded(false);
     };
 
     const handleButtonDelete = () => {
         if (selectedRecipeProduct != null) {
-            if (recetas != null) {
-                // Reemplazar por un cambio en la base de datos
-                const updatedRecipes = recetas.map((receta) => {
-                    if (receta.identificador === recipe.identificador) {
-                        const updatedRecipeProduct = receta.productos.filter(
+
+            if (receta.identificador != null) {
+                // Remplazar por un cambio en la base de datos (delete) -> Aqui se puede quitar de los parametros receta, ya que solo se utiliza para comprobar que sirva (quitar en CustomerRecipe)
+                const updatedRecipes = recetas.map((r) => {
+                    if (r.identificador === receta.identificador) {
+                        const updatedRecipeProduct = r.productos.filter(
                             (producto) => producto.identificador !== selectedRecipeProduct.identificador
                         );
-                        return { ...receta, productos: updatedRecipeProduct };
+                        return { ...r, productos: updatedRecipeProduct };
                     }
-                    return receta;
+                    return r;
                 });
+                //
                 setRecipes(updatedRecipes);
-                setRecipeProducts(
-                    updatedRecipes.find((receta) => receta.identificador === recipe.identificador)?.productos || []
-                );
-            } else {
-                const updatedProducts = recipeProducts.filter(
-                    (producto) => producto.identificador !== selectedRecipeProduct.identificador
-                );
-                setRecipeProducts(updatedProducts);
-                if (setRecipeFunction != null) setRecipeFunction(recipe);
+                setRecipeProducts(updatedRecipes.find((r) => r.identificador === receta.identificador)?.productos || []);
             }
+            else {
+                const index = receta.productos.findIndex((p) => p.identificador === selectedRecipeProduct.identificador);
+                receta.productos.splice(index, 1);
+
+                const updatedProducts = recipeProducts.filter((producto) => producto.identificador !== selectedRecipeProduct.identificador);
+                setRecipeProducts(updatedProducts);
+
+            }
+
             setIsRecipeProductAdded(false);
         }
     };
@@ -61,26 +64,32 @@ function RecipeProductList({ productos, recetas, recipe, setRecipeFunction, setR
     };
 
     const handleButtonSaveAdd = () => {
-        // Reemplazar por un cambio en la base de datos
+
+        // Remplazar por un cambio en la base de datos (post)
         const newProduct = { ...selectedProduct };
-        newProduct.identificador = 'Z';
         newProduct.gramos = gramos;
 
-        if (recetas != null) {
-            const updatedRecipes = recetas.map((receta) => {
-                if (receta.identificador === recipe.identificador) {
-                    const recipeProducts = [...receta.productos, newProduct];
-                    return { ...receta, productos: recipeProducts };
+        if (receta.identificador != null) {
+            const updatedRecipes = recetas.map((r) => {
+                if (r.identificador === receta.identificador) {
+                    const recipeProducts = r.productos;
+                    recipeProducts.push(newProduct);
+                    return {
+                        ...r,
+                        productos: recipeProducts
+                    };
                 }
-                return receta;
+                return r;
             });
             setRecipes(updatedRecipes);
-            setRecipeProducts(updatedRecipes.find((receta) => receta.identificador === recipe.identificador)?.productos || []);
-        } else {
-            const updatedProducts = [...recipeProducts, newProduct];
-            // console.log(updatedProducts);
-            setRecipeProducts(updatedProducts);
-            if (setRecipeFunction != null) setRecipeFunction(recipe);
+            setRecipeProducts(updatedRecipes.find((r) => r.identificador === receta.identificador)?.productos || []);
+        }
+        //
+
+        else{
+            receta.productos.push(newProduct);
+            setRecipeProducts(receta.productos);
+
         }
 
         setGramos('');
@@ -90,7 +99,7 @@ function RecipeProductList({ productos, recetas, recipe, setRecipeFunction, setR
     return (
         <div className="d-flex" style={{ justifyContent: 'center' }}>
             <div className="d-flex" style={{ flexDirection: 'column' }}>
-                <ObjectList objects={recipeProducts} setObjectFunction={handleSelectedRecipeProduct} />
+                <ObjectList objects={recipeProducts} setObjectFunction={handleselectedRecipeProduct} />
 
                 {isRecipeProductAdded ? (
                     <div className="d-flex" style={{ marginTop: '10px' }}>
@@ -108,27 +117,18 @@ function RecipeProductList({ productos, recetas, recipe, setRecipeFunction, setR
                             value={gramos}
                             onChange={(e) => setGramos(e.target.value)}
                         />
-                        <Button style={{ width: '100%' }} onClick={handleButtonSaveAdd}>
-                            {' '}
-                            ✓{' '}
-                        </Button>
+                        <Button style={{ width: '100%' }} onClick={handleButtonSaveAdd}> ✓ </Button>
                     </div>
                 ) : (
                     <div className="d-flex" style={{ marginTop: '10px' }}>
-                        <Button onClick={handleButtonDelete} style={{ width: '100%', marginRight: '10px' }}>
-                            {' '}
-                            🗑️{' '}
-                        </Button>
-                        <Button onClick={handleButtonAdd} style={{ width: '100%' }}>
-                            {' '}
-                            +{' '}
-                        </Button>
+                        <Button onClick={handleButtonDelete} style={{ width: '100%', marginRight: '10px' }}> 🗑️ </Button>
+                        <Button onClick={handleButtonAdd} style={{ width: '100%' }}> + </Button>
                     </div>
                 )}
             </div>
 
             <div className="d-flex" style={{ flexDirection: 'column', marginLeft: '50px' }}>
-                <RecipeProductInfo producto={selectedRecipeProduct}></RecipeProductInfo>
+                <RecipeProductInfo producto={selectedRecipeProduct} receta={receta} setRecipes={setRecipes}></RecipeProductInfo>
             </div>
         </div>
     );

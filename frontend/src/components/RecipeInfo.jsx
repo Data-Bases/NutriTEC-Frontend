@@ -6,7 +6,7 @@ import FoodInfo from './FoodInfo';
 import RecipeEditableInfo from './RecipeEditableInfo';
 
 
-function RecipeInfo({ receta }) {
+function RecipeInfo({ receta, setRecipes}) {
     const [isInfoEditable, SetisInfoEditable] = useState(false);
 
     const handleIsInfoEditable = (value) => {
@@ -24,7 +24,7 @@ function RecipeInfo({ receta }) {
             {(receta != null) ?
                 <>
                     {isInfoEditable ?
-                        <RecipeEditableInfo receta={receta} isInfoEditableFunction={handleIsInfoEditable}></RecipeEditableInfo>
+                        <RecipeEditableInfo receta={receta} isInfoEditableFunction={handleIsInfoEditable} setRecipes={setRecipes}></RecipeEditableInfo>
                         :
                         <>
                             <FoodInfo alimento={receta}></FoodInfo>

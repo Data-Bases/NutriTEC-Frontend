@@ -21,7 +21,7 @@ function RecipeList({ recetas, setRecipeFunction, setRecipes }) {
     const handleButtonDelete = () => {
         if (selectedRecipe != null) {
 
-            // Remplazar por un cambio en la base de datos
+            // Remplazar por un cambio en la base de datos (delete)
             const updatedRecipes = recetas.filter((r) => r.identificador !== selectedRecipe.identificador);
             //
 
@@ -36,7 +36,7 @@ function RecipeList({ recetas, setRecipeFunction, setRecipes }) {
 
     const handleButtonSaveAdd = () => {
 
-        // Remplazar por un cambio en la base de datos
+        // Remplazar por un cambio en la base de datos (post)
         const newRecipe = {
             identificador: 'X',
             nombre: addedProductName,
@@ -78,7 +78,7 @@ function RecipeList({ recetas, setRecipeFunction, setRecipes }) {
             </div>
 
             <div className="d-flex" style={{ flexDirection: 'column', marginLeft: '50px' }}>
-                <RecipeInfo receta={selectedRecipe}></RecipeInfo>
+                <RecipeInfo receta={selectedRecipe} setRecipes={setRecipes}></RecipeInfo>
             </div>
         </div >
     );

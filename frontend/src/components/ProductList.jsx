@@ -30,7 +30,7 @@ function ProductList({ products, setProducts }) {
     const handleButtonDelete = () => {
         if (selectedProduct != null) {
 
-            // Remplazar por un cambio en la base de datos
+            // Remplazar por un cambio en la base de datos (delete)
             const updatedProducts = products.filter((p) => p.identificador !== selectedProduct.identificador);
             //
 
@@ -45,7 +45,7 @@ function ProductList({ products, setProducts }) {
 
     const handleButtonSaveAdd = () => {
 
-        // Remplazar por un cambio en la base de datos
+        // Remplazar por un cambio en la base de datos (post)
         const newProduct = {
             identificador: 'X',
             nombre: addedProductName,
@@ -85,7 +85,7 @@ function ProductList({ products, setProducts }) {
             </div>
 
             <div className="d-flex" style={{ flexDirection: 'column', marginLeft: '50px' }}>
-                <ProductInfo product={selectedProduct}></ProductInfo>
+                <ProductInfo product={selectedProduct} setProducts={setProducts}></ProductInfo>
             </div>
         </div >
     );
