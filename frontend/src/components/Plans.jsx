@@ -36,10 +36,10 @@ function Plans({ plan, setDate, setSelected }) {
             "Saturday",
             "Sunday",
         ][new Date(fecha).getDay()];
-    console.log(plan);
+    // console.log(plan);
     const desayunoDelDía = () => {
         let productosDesayuno;
-        console.log(plan);
+        // console.log(plan);
         plan.meals.map((meal) => {
             console.log(meal);
             if (meal.dayOfTheWeek == nombreBusquedaSegunFecha(dayFilter)) {
@@ -123,7 +123,7 @@ function Plans({ plan, setDate, setSelected }) {
                     {plan &&
                         plan.planName &&
                         desayunoDelDía().map((producto) => (
-                            <div key={producto.id} id={producto.id} onClick={setSelected}>
+                            <div key={producto.id} id={producto.id}>
                                 <h5>
                                     {producto.name}-{producto.servings}
                                 </h5>
@@ -135,7 +135,7 @@ function Plans({ plan, setDate, setSelected }) {
                     {plan &&
                         plan.planName &&
                         almuerzoDelDía().map((producto) => (
-                            <div key={producto.id} id={producto.id} onClick={setSelected}>
+                            <div key={producto.id} id={producto.id}>
                                 <h5>
                                     {producto.name}-{producto.servings}
                                 </h5>
@@ -147,7 +147,7 @@ function Plans({ plan, setDate, setSelected }) {
                     {plan &&
                         plan.planName &&
                         cenaDelDía().map((producto) => (
-                            <div key={producto.id} id={producto.id} onClick={setSelected}>
+                            <div key={producto.id} id={producto.id}>
                                 <h5>
                                     {producto.name}-{producto.servings}
                                 </h5>
@@ -161,7 +161,7 @@ function Plans({ plan, setDate, setSelected }) {
                 {plan &&
                     plan.planName &&
                     snackDelDía().map((producto) => (
-                        <div key={producto.id} id={producto.id} onClick={setSelected}>
+                        <div key={producto.id} id={producto.id}>
                             <h5>
                                 {producto.name}-{producto.servings}
                             </h5>

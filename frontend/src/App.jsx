@@ -15,6 +15,8 @@ import CustomerProductManagementView from "./components/CustomerProductManagemen
 import CustomerRecipeManagementView from "./components/CustomerRecipeManagementView";
 import TabBar from './components/NavigationBar';
 import Plans from "./components/Plans";
+import ClientPlan from "./components/clientPlan";
+import NutricionistPlans from "./components/NutricionistPlans";
 
 import { pathToRegexp } from "path-to-regexp";
 import { Router, Switch, Route, Link, useRoute } from "wouter";
@@ -23,7 +25,6 @@ import "./styles/App.scss";
 import SuperiorComponent from "./components/SuperiorComponent";
 
 import { UpdateProvider } from "./components/backendConection";
-import ClientPlan from "./components/clientPlan";
 /*
  * This function specifies how strings like /app/:users/:items* are
  * transformed into regular expressions.
@@ -68,7 +69,7 @@ function App() {
                     <Route path="/client/products"><SuperiorComponent vista={"CP"}/></Route>
                     <Route path="/client/recipes"><SuperiorComponent vista={"CR"}/></Route>
                     <Route path="/nutricionist">Profile</Route>
-                    <Route path="/nutricionist/plans"><Plans/></Route>
+                    <Route path="/nutricionist/plans"><NutricionistPlans/></Route>
                     <Route path="/nutricionist/products"><SuperiorComponent vista={"NP"}/></Route>
                     <Route path="/admin"><SuperiorComponent vista={"AP"}/></Route>
                     <Route path="/:anything">404 Página no encontrada</Route>
