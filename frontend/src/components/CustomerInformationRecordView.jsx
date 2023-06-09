@@ -1,106 +1,330 @@
-import React, { useState } from 'react';
-import { Container, Form, Button, Dropdown, DropdownButton } from 'react-bootstrap';
-import DatePicker from 'react-datepicker';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-datepicker/dist/react-datepicker.css';
+import React, { useState } from "react";
+import {
+    Container,
+    Form,
+    Button,
+    Dropdown,
+    DropdownButton,
+} from "react-bootstrap";
+import DatePicker from "react-datepicker";
+import axios from "axios";
+import { baseURL } from "./backendConection";
+import jsPDF from "jspdf";
 
-
-
-import RecipeProductList from './RecipeProductList';
+import RecipeProductList from "./RecipeProductList";
 
 function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
-    const [selectedFood, setSelectedFood] = useState('Desayuno');
-    const [foodEated, setFoodEated] = useState({identificador: null, productos: []});
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    
+    const [selectedFood, setSelectedFood] = useState("Desayuno");
+    const [foodEated, setFoodEated] = useState({
+        identificador: null,
+        productos: [],
+    });
+    const [selectedDate, setSelectedDate] = useState(
+        new Date().toISOString().substring(0, 10)
+    );
+    const [initDate, setInitDate] = useState("1990-01-01");
+    const [endDate, setEndDate] = useState(
+        new Date().toISOString().substring(0, 10)
+    );
 
-    const [cuello, setCuello] = useState('');
-    const [cintura, setCintura] = useState('');
-    const [cadera, setCadera] = useState('');
-    const [musculo, setMusculo] = useState('');
-    const [grasa, setGrasa] = useState('');
+    const [cuello, setCuello] = useState("");
+    const [cintura, setCintura] = useState("");
+    const [cadera, setCadera] = useState("");
+    const [musculo, setMusculo] = useState("");
+    const [grasa, setGrasa] = useState("");
 
     const handleDropdownFood = (aliemento) => {
         setSelectedFood(aliemento);
-    }
+    };
 
     const handleButtonRegistrarComida = () => {
         // Hace un post de esto
-        console.log(selectedFood);
-        console.log(foodEated);
-
-    }
+        foodEated.productos.map((product) => {
+            axios
+                .post(baseURL + `/patient/AddProductToPatient`, {
+                    productId: product.identificador,
+                    patientId: localStorage.getItem("userId"),
+                    mealtime: selectedFood,
+                    consumedate: selectedDate,
+                    servings: product.gramos,
+                })
+                .then(function (response) {
+                    console.log("Comida Registrada");
+                    setFoodEated({
+                        identificador: null,
+                        productos: [],
+                    });
+                })
+                .catch(function (error) {
+                    if (error.response) {
+                        // POST response with a status code not in range 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                    } else if (error.request) {
+                        // no response
+                        console.log(error.request);
+                        // instance of XMLHttpRequest in the browser
+                        // instance ofhttp.ClientRequest in node.js
+                    } else {
+                        // Something wrong in setting up the request
+                        console.log("Error", error.message);
+                    }
+                    console.log(error.config);
+                });
+        });
+    };
 
     const handleButtonRegistrarMedidas = () => {
-        setCuello('');
-        setCintura('');
-        setCadera('');
-        setMusculo('');
-        setGrasa('');
+        setCuello("");
+        setCintura("");
+        setCadera("");
+        setMusculo("");
+        setGrasa("");
 
         // Hace un post de esto
-        console.log(cuello);
-        console.log(cintura);
-        console.log(cadera);
-        console.log(musculo);
-        console.log(grasa);
-    }
+        axios
+            .post(
+                baseURL +
+                    `/patient/RegisterPatientMeasurements?patientId=${localStorage.getItem(
+                        "userId"
+                    )}`,
+                {
+                    height: 0,
+                    fatpercentage: grasa,
+                    musclepercentage: musculo,
+                    weight: 0,
+                    waist: cintura,
+                    neck: cuello,
+                    hips: cadera,
+                    revisiondate: selectedDate,
+                }
+            )
+            .then(function (response) {
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    // POST response with a status code not in range 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // no response
+                    console.log(error.request);
+                    // instance of XMLHttpRequest in the browser
+                    // instance ofhttp.ClientRequest in node.js
+                } else {
+                    // Something wrong in setting up the request
+                    console.log("Error", error.message);
+                }
+                console.log(error.config);
+            });
+    };
 
     const handleDateChange = (date) => {
-        setSelectedDate(date);
+        setSelectedDate(date.target.value);
         console.log(date);
 
-        console.log(date.toLocaleDateString());
+        // console.log(date.toLocaleDateString());
     };
 
     const handleButtonGenerarReporte = () => {
         // Hace un get? de esto
-        console.log("se genera reporte");
-
-    }
+        console.log("Reporte");
+        axios
+            .get(
+                baseURL +
+                    `/patient/GetPatientMeasurementsByDate?patientId=${localStorage.getItem(
+                        "userId"
+                    )}&startDate=${initDate}&finishDate=${endDate}`
+            )
+            .then(function (response) {
+                console.log(response.data);
+                const report = new jsPDF();
+                let yCoords = 10;
+                response.data.map((e) => {
+                    Object.keys(e).map((k) => {
+                        report.text(k + ":" + e[k].toString(), 10, yCoords);
+                        yCoords += 10;
+                    });
+                    report.text(
+                        "-----------------------------------------",
+                        10,
+                        yCoords
+                    );
+                    yCoords += 10;
+                    if (yCoords >= 240) {
+                        report.addPage();
+                        yCoords = 10;
+                    }
+                });
+                report.save("report.pdf");
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    // GET response with a status code not in range 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // no response
+                    console.log(error.request);
+                    // instance of XMLHttpRequest in the browser
+                    // instance ofhttp.ClientRequest in node.js
+                } else {
+                    // Something wrong in setting up the request
+                    console.log("Error", error.message);
+                }
+                console.log(error.config);
+            });
+    };
 
     return (
         <>
-            <Container className='d-flex' style={{ justifyContent: 'space-between', backgroundColor: 'lightgray', borderRadius: '10px', padding: '20px' }} >
+            <Container
+                className="d-flex"
+                style={{
+                    justifyContent: "space-between",
+                    backgroundColor: "lightgray",
+                    borderRadius: "10px",
+                    padding: "20px",
+                }}
+            >
                 <div>
-                    <DropdownButton className='d-flex' style={{ justifyContent: 'start', marginBottom: '10px' }} title={selectedFood} onSelect={handleDropdownFood} >
-                        <Dropdown.Item eventKey="Desayuno"> Desayuno </Dropdown.Item>
-                        <Dropdown.Item eventKey="Almuerzo"> Almuerzo </Dropdown.Item>
-                        <Dropdown.Item eventKey="Cena"> Cena </Dropdown.Item>
-                        <Dropdown.Item eventKey="Cena"> Merienda </Dropdown.Item>
+                    <DropdownButton
+                        className="d-flex"
+                        style={{
+                            justifyContent: "start",
+                            marginBottom: "10px",
+                        }}
+                        title={selectedFood}
+                        onSelect={handleDropdownFood}
+                    >
+                        <Dropdown.Item eventKey="Breakfast">
+                            {" "}
+                            Desayuno{" "}
+                        </Dropdown.Item>
+                        <Dropdown.Item eventKey="Lunch">
+                            {" "}
+                            Almuerzo{" "}
+                        </Dropdown.Item>
+                        <Dropdown.Item eventKey="Dinner"> Cena </Dropdown.Item>
+                        <Dropdown.Item eventKey="Snack"> Snack </Dropdown.Item>
                     </DropdownButton>
 
-                    <RecipeProductList productos={[...productos, ...recetas]} receta={foodEated} setRecipes={setRecipes}></RecipeProductList>
-
+                    <RecipeProductList
+                        productos={[...productos, ...recetas]}
+                        receta={foodEated}
+                        setRecipes={setRecipes}
+                    ></RecipeProductList>
                 </div>
 
-                <div className='d-flex' style={{ alignItems: 'end' }}>
-                    <p style={{ fontWeight: 'bold' }} > Fecha: </p>
+                <div className="d-flex" style={{ alignItems: "end" }}>
+                    <p style={{ fontWeight: "bold" }}> Fecha: </p>
 
                     <div>
-                        <DatePicker className="form-control" dateFormat="dd/MM/yyyy" selected={selectedDate} onChange={handleDateChange}></DatePicker>
+                        <input
+                            type="date"
+                            className="form-control"
+                            defaultValue={selectedDate}
+                            onChange={handleDateChange}
+                        ></input>
                     </div>
 
-                    <Button style={{ marginLeft: '10px' }} onClick={handleButtonRegistrarComida}> Registrar Comida </Button>
-
+                    <Button
+                        style={{ marginLeft: "10px" }}
+                        onClick={handleButtonRegistrarComida}
+                    >
+                        {" "}
+                        Registrar Comida{" "}
+                    </Button>
                 </div>
-
             </Container>
 
             <hr />
 
-            <Container style={{ backgroundColor: 'lightgray', borderRadius: '10px', padding: '20px' }} >
-                <div className='d-flex' style={{ justifyContent: 'space-around' }}>
-                    <Form.Control placeholder="Cuello (mm)" value={cuello} onChange={(e) => setCuello(e.target.value)} />
-                    <Form.Control style={{ marginLeft: '20px' }} placeholder="Cintura (mm)" value={cintura} onChange={(e) => setCintura(e.target.value)} />
-                    <Form.Control style={{ marginLeft: '20px' }} placeholder="Cadera (mm)" value={cadera} onChange={(e) => setCadera(e.target.value)} />
-                    <Form.Control style={{ marginLeft: '20px' }} placeholder="% Musculo" value={musculo} onChange={(e) => setMusculo(e.target.value)} />
-                    <Form.Control style={{ marginLeft: '20px' }} placeholder="% Grasa" value={grasa} onChange={(e) => setGrasa(e.target.value)} />
+            <Container
+                style={{
+                    backgroundColor: "lightgray",
+                    borderRadius: "10px",
+                    padding: "20px",
+                }}
+            >
+                <div
+                    className="d-flex"
+                    style={{ justifyContent: "space-around" }}
+                >
+                    <Form.Control
+                        placeholder="Cuello (mm)"
+                        value={cuello}
+                        onChange={(e) => setCuello(e.target.value)}
+                    />
+                    <Form.Control
+                        style={{ marginLeft: "20px" }}
+                        placeholder="Cintura (mm)"
+                        value={cintura}
+                        onChange={(e) => setCintura(e.target.value)}
+                    />
+                    <Form.Control
+                        style={{ marginLeft: "20px" }}
+                        placeholder="Cadera (mm)"
+                        value={cadera}
+                        onChange={(e) => setCadera(e.target.value)}
+                    />
+                    <Form.Control
+                        style={{ marginLeft: "20px" }}
+                        placeholder="% Musculo"
+                        value={musculo}
+                        onChange={(e) => setMusculo(e.target.value)}
+                    />
+                    <Form.Control
+                        style={{ marginLeft: "20px" }}
+                        placeholder="% Grasa"
+                        value={grasa}
+                        onChange={(e) => setGrasa(e.target.value)}
+                    />
                 </div>
 
-                <div className='d-flex' style={{ justifyContent: 'end', marginTop: '20px' }}>
-                    <Button onClick={handleButtonRegistrarMedidas}> Registrar Medidas </Button>
-                    <Button style={{ marginLeft: '10px' }} onClick={handleButtonGenerarReporte}> Generar reporte </Button>
+                <div
+                    className="d-flex"
+                    style={{
+                        justifyContent: "end",
+                        marginTop: "20px",
+                        alignItems: "center",
+                    }}
+                >
+                    <label htmlFor="idate"> Fecha Inicial: </label>
+                    <input
+                        type="date"
+                        id="idate"
+                        defaultValue={initDate}
+                        style={{
+                            width: "150px",
+                        }}
+                        onChange={(e) => setInitDate(e.target.value)}
+                    />
+                    <label htmlFor="edate"> Fecha Final: </label>
+                    <input
+                        type="date"
+                        id="edate"
+                        style={{
+                            width: "150px",
+                        }}
+                        defaultValue={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                    />
+                    <Button onClick={handleButtonRegistrarMedidas}>
+                        {" "}
+                        Registrar Medidas{" "}
+                    </Button>
+                    <Button
+                        style={{ marginLeft: "10px" }}
+                        onClick={handleButtonGenerarReporte}
+                    >
+                        {" "}
+                        Generar reporte{" "}
+                    </Button>
                 </div>
             </Container>
         </>

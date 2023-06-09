@@ -4,14 +4,16 @@ import { Link, useLocation } from "wouter";
 
 const names = {
   Generals:["Inicio", "Entrar", "Unirse"],
-  Client:["Inicio", "Registrar Info", "Gestion de Productos"],
-  Nutri:["Inicio", "Planes", "Gestion de Productos"]
+  Client:["Inicio", "Registrar Info", "Productos", "Recetas", "Salir"],
+  Nutri:["Inicio", "Planes", "Gestion de Productos", "Salir"],
+  Admin:["Inicio", "Salir"]
 }
 
 const urls = {
   Generals:["/", "/login", "/signup"],
-  Client:["/client", "/client/info", "/client/products"],
-  Nutri:["/nutricionist", "/nutricionist/plans", "/nutricionist/products"]
+  Client:["/client", "/client/info", "/client/products", "/client/recipes", "/"],
+  Nutri:["/nutricionist", "/nutricionist/plans", "/nutricionist/products", "/"],
+  Admin:["/admin", "/"]
 }
 
 function NavigationBar() {
@@ -39,15 +41,12 @@ function NavigationBar() {
   return (
     <Navbar bg="success" variant="light" fixed="top">
       <Nav className="mx-auto" onSelect={handleSelect}>
-        <Link href={urls[actual][0]} >
-        <Nav.Link eventKey={names[actual][0]} style={{ color: 'white', textAlign: 'right' }}>{names[actual][0]}</Nav.Link>
-        </Link>
-        <Link href={urls[actual][1]} >
-        <Nav.Link eventKey={names[actual][1]} style={{ color: 'white', textAlign: 'right' }}>{names[actual][1]}</Nav.Link>
-        </Link>
-        <Link href={urls[actual][2]} >
-        <Nav.Link eventKey={names[actual][2]} style={{ color: 'white', textAlign: 'right' }}>{names[actual][2]}</Nav.Link>
-        </Link>
+        {names[actual].map((item, index) => 
+            <Link href={urls[actual][index]} key={index}>
+            <Nav.Link eventKey={item} style={{ color: 'white', textAlign: 'right' }} key={item}>{item}</Nav.Link>
+            </Link>
+        )}
+        
       </Nav>
     </Navbar>
   );

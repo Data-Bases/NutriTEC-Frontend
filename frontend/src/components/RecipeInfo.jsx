@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from 'react-bootstrap';
 
 import FoodInfo from './FoodInfo';
@@ -28,7 +27,7 @@ function RecipeInfo({ receta, setRecipes}) {
                         :
                         <>
                             <FoodInfo alimento={receta}></FoodInfo>
-                            <Button onClick={handleEditButton} style={{ width: '100%', marginTop: '10px' }}> ✎ </Button>
+                            {/* <Button onClick={handleEditButton} style={{ width: '100%', marginTop: '10px' }}> ✎ </Button> */}
                         </>}
                 </>
                 : <p> No hay recetas </p>}

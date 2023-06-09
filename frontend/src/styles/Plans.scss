@@ -23,6 +23,7 @@
 .plans-desayuno{
     width: 30%;
     justify-content: center;
+    flex-direction: column;
 }
 
 .plans-almuerzo{
@@ -30,15 +31,18 @@
     border-left: 2px solid $secondary;
     border-right: 2px solid $secondary;
     justify-content: center;
+    flex-direction: column;
 }
 
 .plans-cena{
     width: 30%;
     justify-content: center;
+    flex-direction: column;
 }
 
 .plans-snack{
-    
+    justify-content: space-evenly;
+    flex-wrap: wrap;
 }
 
 .divider{

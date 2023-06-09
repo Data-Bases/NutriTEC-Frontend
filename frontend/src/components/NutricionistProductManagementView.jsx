@@ -3,7 +3,6 @@ import { Container, Button } from 'react-bootstrap';
 
 import ProductList from './ProductList';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function NutricionistProductManagementView({ products, setProducts }) {
 
