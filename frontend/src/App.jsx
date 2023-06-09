@@ -15,7 +15,7 @@ import CustomerProductManagementView from "./components/CustomerProductManagemen
 import CustomerRecipeManagementView from "./components/CustomerRecipeManagementView";
 import TabBar from './components/NavigationBar';
 import Plans from "./components/Plans";
-import ClientPlan from "./components/clientPlan";
+import ClientPlan from "./components/ClientPlan";
 import NutricionistPlans from "./components/NutricionistPlans";
 
 import { pathToRegexp } from "path-to-regexp";
