@@ -38,7 +38,6 @@ import { UpdateProvider } from "./components/backendConection";
  */
 
 const convertPathToRegexp = (path) => {
-    
     let keys = [];
 
     // we use original pathToRegexp package here with keys
