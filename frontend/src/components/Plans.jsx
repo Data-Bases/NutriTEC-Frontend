@@ -41,10 +41,10 @@ function Plans({ plan, setDate, setSelected }) {
         let productosDesayuno;
         // console.log(plan);
         plan.meals.map((meal) => {
-            console.log(meal);
+            // console.log(meal);
             if (meal.dayOfTheWeek == nombreBusquedaSegunFecha(dayFilter)) {
                 meal.mealtimes.map((time) => {
-                    console.log(time);
+                    // console.log(time);
                     if (time.mealtime == "Breakfast") {
                         productosDesayuno = [...time.products, ...time.recipes];
                         return productosDesayuno;

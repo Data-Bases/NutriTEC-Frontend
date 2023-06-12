@@ -5,6 +5,7 @@ import {
     Button,
     Dropdown,
     DropdownButton,
+    Modal
 } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import axios from "axios";
@@ -14,7 +15,7 @@ import jsPDF from "jspdf";
 import RecipeProductList from "./RecipeProductList";
 
 function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
-    const [selectedFood, setSelectedFood] = useState("Desayuno");
+    const [selectedFood, setSelectedFood] = useState("Breakfast");
     const [foodEated, setFoodEated] = useState({
         identificador: null,
         productos: [],
@@ -26,13 +27,17 @@ function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
     const [endDate, setEndDate] = useState(
         new Date().toISOString().substring(0, 10)
     );
+    const [comments, setComments] = useState(null);
 
     const [cuello, setCuello] = useState("");
     const [cintura, setCintura] = useState("");
     const [cadera, setCadera] = useState("");
     const [musculo, setMusculo] = useState("");
     const [grasa, setGrasa] = useState("");
+    const [show, setShow] = useState(false);
 
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     const handleDropdownFood = (aliemento) => {
         setSelectedFood(aliemento);
     };
@@ -40,21 +45,17 @@ function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
     const handleButtonRegistrarComida = () => {
         // Hace un post de esto
         foodEated.productos.map((product) => {
+            const body = {
+                productId: product.identificador,
+                patientId: localStorage.getItem("userId"),
+                mealtime: selectedFood,
+                consumedate: selectedDate,
+                servings: product.gramos,
+            };
+            console.log(body);
             axios
-                .post(baseURL + `/patient/AddProductToPatient`, {
-                    productId: product.identificador,
-                    patientId: localStorage.getItem("userId"),
-                    mealtime: selectedFood,
-                    consumedate: selectedDate,
-                    servings: product.gramos,
-                })
-                .then(function (response) {
-                    console.log("Comida Registrada");
-                    setFoodEated({
-                        identificador: null,
-                        productos: [],
-                    });
-                })
+                .post(baseURL + `/patient/AddProductToPatient`, body)
+                .then(function (response) {})
                 .catch(function (error) {
                     if (error.response) {
                         // POST response with a status code not in range 2xx
@@ -73,8 +74,46 @@ function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
                     console.log(error.config);
                 });
         });
+        alert("Comida Registrada");
+        setFoodEated({
+            identificador: null,
+            productos: [],
+        });
     };
-
+    const handleViewComments = () => {
+        console.log(`/forum/GetFilteredComments?patientId=${localStorage.getItem(
+            "userId"
+        )}&dateTime=${selectedDate}&meal=${selectedFood}`);
+        axios
+            .get(
+                baseURL +
+                    `/forum/GetFilteredComments?patientId=${localStorage.getItem(
+                        "userId"
+                    )}&dateTime=${selectedDate}&meal=${selectedFood}`
+            )
+            .then(function (response) {
+                console.log("comments", response.data);
+                setComments(response.data);
+                handleShow();
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    // GET response with a status code not in range 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // no response
+                    console.log(error.request);
+                    // instance of XMLHttpRequest in the browser
+                    // instance ofhttp.ClientRequest in node.js
+                } else {
+                    // Something wrong in setting up the request
+                    console.log("Error", error.message);
+                }
+                console.log(error.config);
+            });
+    };
     const handleButtonRegistrarMedidas = () => {
         setCuello("");
         setCintura("");
@@ -325,7 +364,32 @@ function CustomerInformationRecordView({ productos, recetas, setRecipes }) {
                         {" "}
                         Generar reporte{" "}
                     </Button>
+                    <Button
+                        style={{ marginLeft: "10px" }}
+                        onClick={handleViewComments}
+                    >
+                        {" "}
+                        Ver Comentarios{" "}
+                    </Button>
                 </div>
+                <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Comentarios del Consumo</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {comments &&
+                            comments.map((producto, i) => (
+                                <div key={i} id={i}>
+                                    <h5>{producto.commentText}</h5>
+                                </div>
+                            ))}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </Container>
         </>
     );
