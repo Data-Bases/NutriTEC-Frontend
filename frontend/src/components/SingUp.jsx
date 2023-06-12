@@ -166,13 +166,13 @@ function SignUp(props) {
                 birthdate: datos.Nacimiento,
                 password: datos.Contraseña,
                 country: datos.Pais,
-                caloriesintake: datos["Calorias Máximas"]
+                caloriesintake: datos["Calorias Máximas"],
             };
 
             console.log(body);
 
             axios
-                .post(baseURL + `/nutritec/patient/PatientSignUp`, body)
+                .post(baseURL + `/patient/PatientSignUp`, body)
                 .then(function (response) {
                     console.log("Enviado", response.data);
                     navigate("/login");
@@ -195,6 +195,42 @@ function SignUp(props) {
                         // Something wrong in setting up the request
                         console.log("Error", error.message);
                     }
+                });
+
+            axios
+                .post(
+                    baseURL +
+                        `/patient/RegisterPatientMeasurements?patientId=14`,
+                    {
+                        height: 0,
+                        fatpercentage: datos["% Grasa"],
+                        musclepercentage: datos["% Músculo"],
+                        weight: 0,
+                        waist: datos["Cintura (mm)"],
+                        neck: datos["Cuello (mm)"],
+                        hips: datos["Cadera (mm)"],
+                        revisiondate: new Date().toISOString().substring(0,10),
+                    }
+                )
+                .then(function (response) {
+                    console.log(response.data);
+                })
+                .catch(function (error) {
+                    if (error.response) {
+                        // POST response with a status code not in range 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                    } else if (error.request) {
+                        // no response
+                        console.log(error.request);
+                        // instance of XMLHttpRequest in the browser
+                        // instance ofhttp.ClientRequest in node.js
+                    } else {
+                        // Something wrong in setting up the request
+                        console.log("Error", error.message);
+                    }
+                    console.log(error.config);
                 });
         }
     };

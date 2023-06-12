@@ -17,6 +17,7 @@ import TabBar from './components/NavigationBar';
 import Plans from "./components/Plans";
 import ClientPlan from "./components/ClientPlan";
 import NutricionistPlans from "./components/NutricionistPlans";
+import NutriClients from "./components/NutriClients";
 
 import { pathToRegexp } from "path-to-regexp";
 import { Router, Switch, Route, Link, useRoute } from "wouter";
@@ -68,7 +69,7 @@ function App() {
                     <Route path="/client/info"><SuperiorComponent vista={"CI"}/></Route>
                     <Route path="/client/products"><SuperiorComponent vista={"CP"}/></Route>
                     <Route path="/client/recipes"><SuperiorComponent vista={"CR"}/></Route>
-                    <Route path="/nutricionist">Profile</Route>
+                    <Route path="/nutricionist"><NutriClients/></Route>
                     <Route path="/nutricionist/plans"><NutricionistPlans/></Route>
                     <Route path="/nutricionist/products"><SuperiorComponent vista={"NP"}/></Route>
                     <Route path="/admin"><SuperiorComponent vista={"AP"}/></Route>
